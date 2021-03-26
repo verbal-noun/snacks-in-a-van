@@ -1,0 +1,25 @@
+{
+  "name": "snacks-in-a-van",
+  "version": "1.0.0",
+  "description": "Snacks in a Van",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hasanelbanna/INFO30005-Runtime-Terror.git"
+  },
+  "author": "Runtime Terror",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hasanelbanna/INFO30005-Runtime-Terror/issues"
+  },
+  "homepage": "https://github.com/hasanelbanna/INFO30005-Runtime-Terror#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "mongoose": "^5.12.0",
+    "nodemon": "^2.0.7"
+  }
+}
