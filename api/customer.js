@@ -12,6 +12,7 @@ router.get('/nearby/:longitude,:latitude', (req, res) => {
     query.exec((err, vendors) => {
         if(err) {
             console.log(err);
+            res.status(500).send(err);
         }
         else {
             vendors.sort((a, b) => {
@@ -33,6 +34,7 @@ router.get('/menu', (req, res) => {
     query.exec((err, items) => {
         if(err) {
             console.log(err);
+            res.status(500).send(err);
         }
         else {
             res.send(items);
