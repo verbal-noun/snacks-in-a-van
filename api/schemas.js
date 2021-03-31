@@ -6,13 +6,15 @@ function createModel(name, fields) {
 }
 
 const Customer = createModel("Customer", {
-    email: String, // Email of customer is unique
-    givenName: String,
-    familyName: String
+    email: String,
+    name: {
+        given: String,
+        family: String    
+    }
 });
 
 const Vendor = createModel("Vendor", {
-    vendorId: String, // Name of vendor is unique
+    name: String,
     open: Boolean,
     address: String,
     position: {
@@ -22,16 +24,15 @@ const Vendor = createModel("Vendor", {
 });
 
 const OrderItem = createModel("OrderItem", {
-    itemId: String,
+    item: Schema.Types.ObjectId,
     quantity: Number
 });
 
 const Order = createModel("Order", {
-    orderId: Number,
-    vendorId: String,
+    vendor: Schema.Types.ObjectId,
     createdAt: Date,
     modifiedAt: Date,
-    ratingId: Number,
+    rating: Schema.Types.ObjectId,
     items: [OrderItem.schema],
     status: {
         type: String,
@@ -42,13 +43,11 @@ const Order = createModel("Order", {
 });
 
 const Rating = createModel("Rating", {
-    ratingId: Number,
-    ratingValue: Number,
+    value: Number,
     comment: String
 });
 
 const Item = createModel("Item", {
-    itemId: Number,
     name: String,
     unitPrice: Number,
     photoURL: String,
