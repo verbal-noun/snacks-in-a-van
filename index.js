@@ -10,7 +10,8 @@ app.use('/api/customer', customerAPI);
 app.use('/api/vendor', vendorAPI);
 
 // TODO: Change this to an official database
-mongoose.connect('mongodb+srv://cluster0.iyw6v.mongodb.net/myFirstDatabase', {
+// Don't forget to add user to database to grant read and write access
+mongoose.connect('mongodb+srv://root:testtest@cluster0.iyw6v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }, (err) => {
