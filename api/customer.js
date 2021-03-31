@@ -4,7 +4,7 @@ const schema = require('./schemas');
 function coordDistance(a, b) {
     dlat = a.latitude - b.latitude;
     dlong = a.longitude - b.longitude;
-    return (dlat * dlat) + (dlong * dlong);
+    return Math.sqrt((dlat * dlat) + (dlong * dlong));
 }
 
 router.get('/nearby/:longitude,:latitude', (req, res) => {
@@ -15,11 +15,14 @@ router.get('/nearby/:longitude,:latitude', (req, res) => {
             res.status(500).send(err);
         }
         else {
+            for(let i = 0; i < vendors.length; i++) {
+                vendors[i] = vendors[i].toJSON();
+                vendors[i].distance = coordDistance(vendors[i].position, req.params);
+            }
             vendors.sort((a, b) => {
-                let da = coordDistance(a.position, req.params);
-                let db = coordDistance(b.position, req.params);
-                return da - db;
+                return a.distance - b.distance;
             });
+
             let nearby = [];
             for(let i = 0; i < 5 && i < vendors.length; i++) {
                 nearby.push(vendors[i]);
