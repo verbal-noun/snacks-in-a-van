@@ -1,1 +1,18 @@
-Customer Register
+<h1>Customer Register</h1>
+
+<form action="/api/customer.js" , method="POST">
+  <div>
+    <label for="name">Name</label>
+    <input type="text" , id="name" , name="name" required />
+  </div>
+  <div>
+    <label for="email">Email</label>
+    <input type="email" , id="email" , name="email" required />
+  </div>
+  <div>
+    <label for="password">Password</label>
+    <input type="password" , id="password" , name="password" required />
+  </div>
+  <button type="submit">Register</button>
+</form>
+<a href="/api/customer/login">Login</a>

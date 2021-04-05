@@ -14,9 +14,20 @@ router.get("/login", (req, res) => {
   res.render("customer-login.ejs");
 });
 
+// Post request for login
+router.post("/login", (req, res) => {
+  //
+  var query = schema.Customer.find();
+});
+
 // GET request for register
 router.get("/register", (req, res) => {
   res.render("customer-register.ejs");
+});
+
+// Post request for register
+router.post("/register", (req, res) => {
+  //
 });
 
 // Get Request to show the nearby 5 trucks to the customer
