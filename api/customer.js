@@ -45,6 +45,19 @@ router.get('/menu', (req, res) => {
     });
 });
 
+router.get('/menu/:itemID', (req, res) => {
+    var query = schema.Item.findById(req.params.itemID);
+    query.exec((err, items) => {
+        if(err) {
+            console.log(err);
+            res.status(500).send(err);
+        }
+        else {
+            res.send(items);
+        }
+    });
+});
+
 router.get('/insertTestData', (req, res) => {
     schema.Item.deleteMany({}).then(() => {
         console.log("Deleted all Items! Inserting new data...");
