@@ -24,6 +24,6 @@ mongoose.connect('mongodb+srv://root:testtest@cluster0.iyw6v.mongodb.net/myFirst
 });
 
 const port = 4040;
-http.listen(port, () => {
+http.listen(process.env.PORT || port, () => {
     console.log(`listening on port *:${port}`);
 });
