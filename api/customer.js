@@ -1,5 +1,15 @@
-const router = require("express").Router();
+const express = require("express");
+const router = express.Router();
 const schema = require("./schemas");
+const bcrypt = require("bcrypt");
+const passport = require("passport");
+
+// const initializePassport = require("./passport-config");
+// initialisePassport(passport);
+
+router.use(express.urlencoded({ extended: true }));
+// Dummy list to hold users
+const users = [];
 
 function coordDistance(a, b) {
   dlat = a.latitude - b.latitude;
@@ -7,6 +17,9 @@ function coordDistance(a, b) {
   return Math.sqrt(dlat * dlat + dlong * dlong);
 }
 
+async function createPasswordHash(password) {
+  return await bcrypt.hash(password, 10);
+}
 // Routes for Authentication
 
 // GET request for login
@@ -17,7 +30,6 @@ router.get("/login", (req, res) => {
 // Post request for login
 router.post("/login", (req, res) => {
   //
-  var query = schema.Customer.find();
 });
 
 // GET request for register
@@ -27,7 +39,26 @@ router.get("/register", (req, res) => {
 
 // Post request for register
 router.post("/register", (req, res) => {
-  //
+  // TODO: Get acutal the customer document from our database
+  var query = schema.Customer.find();
+  // Using dummy user data to show the login
+  // Generate a password hash based on user's inserted password
+  try {
+    const hashedPassword = createPasswordHash(req.body.password);
+    console.log(hashedPassword);
+    users.push({
+      // This would be automatically generated in our database
+      id: Date.now().toString,
+      name: req.body.name,
+      email: req.body.email,
+      password: hashedPassword,
+    });
+    res.redirect("/api/customer/login");
+  } catch (error) {
+    // If registering in successuful, redirect tem to login page
+    res.redirect("/api/customer/register");
+  }
+  console.log(users);
 });
 
 // Get Request to show the nearby 5 trucks to the customer

@@ -3,11 +3,13 @@ const app = express();
 const http = require("http").createServer(app);
 
 const mongoose = require("mongoose");
+const passport = require("passport");
 const customerAPI = require("./api/customer");
 const vendorAPI = require("./api/vendor");
 
 app.use("/api/customer", customerAPI);
 app.use("/api/vendor", vendorAPI);
+app.use(express.urlencoded({ extended: true }));
 
 // Setting templating engine
 app.set("view-engine", "ejs");
