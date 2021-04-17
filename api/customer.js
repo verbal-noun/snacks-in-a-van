@@ -1,15 +1,34 @@
+// Check if we are in production or development
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const express = require("express");
 const router = express.Router();
 const schema = require("./schemas");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
+const flash = require("express-flash");
+const session = require("express-session");
 
 const initializePassport = require("./passport-config");
+const { route } = require("./vendor");
 initializePassport(passport, (email) =>
   users.find((user) => user.email === email)
 );
 
 router.use(express.urlencoded({ extended: true }));
+router.use(flash());
+router.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+router.use(passport.initialize());
+router.use(passport.session());
+
 // Dummy list to hold users
 const users = [];
 
@@ -19,10 +38,17 @@ function coordDistance(a, b) {
   return Math.sqrt(dlat * dlat + dlong * dlong);
 }
 
+// --------------------------------------------------------------------- Authentication ---------------------------------------------------------------------//
+
 async function createPasswordHash(password) {
   return await bcrypt.hash(password, 10);
 }
 // Routes for Authentication
+
+// Route for successful login
+router.get("/home", (req, res) => {
+  res.render("home.ejs");
+});
 
 // GET request for login
 router.get("/login", (req, res) => {
@@ -30,9 +56,14 @@ router.get("/login", (req, res) => {
 });
 
 // Post request for login
-router.post("/login", (req, res) => {
-  //
-});
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/home",
+    failureRedirect: "/login",
+    failureFlash: true,
+  })
+);
 
 // GET request for register
 router.get("/register", (req, res) => {
@@ -40,7 +71,7 @@ router.get("/register", (req, res) => {
 });
 
 // Post request for register
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
   // TODO: Get acutal the customer document from our database
   var query = schema.Customer.find();
   // Using dummy user data to show the login
@@ -63,6 +94,7 @@ router.post("/register", (req, res) => {
   console.log(users);
 });
 
+// --------------------------------------------------------------------- TRUCK LOCATION ---------------------------------------------------------------------//
 // Get Request to show the nearby 5 trucks to the customer
 router.get("/nearby/:longitude,:latitude", (req, res) => {
   var query = schema.Vendor.find();
@@ -88,6 +120,7 @@ router.get("/nearby/:longitude,:latitude", (req, res) => {
   });
 });
 
+// -------------------------------------------------------------------  MENU -----------------------------------------------------------------------//
 // Get the menu displayed to the customer
 router.get("/menu", (req, res) => {
   var query = schema.Item.find();
