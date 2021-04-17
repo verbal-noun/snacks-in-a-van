@@ -4,8 +4,10 @@ const schema = require("./schemas");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 
-// const initializePassport = require("./passport-config");
-// initialisePassport(passport);
+const initializePassport = require("./passport-config");
+initializePassport(passport, (email) =>
+  users.find((user) => user.email === email)
+);
 
 router.use(express.urlencoded({ extended: true }));
 // Dummy list to hold users
