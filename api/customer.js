@@ -16,8 +16,10 @@ const saltRounds = 10;
 const initializePassport = require("./passport-config");
 const { route } = require("./vendor");
 
-initializePassport(passport, (email) =>
-  users.find((user) => user.email === email)
+initializePassport(
+  passport,
+  (email) => users.find((user) => user.email === email),
+  (id) => users.find((user) => user.id === id)
 );
 
 router.use(express.urlencoded({ extended: true }));
@@ -49,12 +51,14 @@ async function createPasswordHash(password) {
 // Routes for Authentication
 
 // Route for successful login
-router.get("/home", (req, res) => {
+router.get("/home", checkAuthenticated, (req, res) => {
+  //res.render("home.ejs", { name: req.user.name });
   res.render("home.ejs");
+  console.log(users);
 });
 
 // GET request for login
-router.get("/login", (req, res) => {
+router.get("/login", checkNotAuthenticated, (req, res) => {
   res.render("customer-login.ejs");
 });
 
@@ -62,19 +66,19 @@ router.get("/login", (req, res) => {
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/home",
+    successRedirect: "/api/customer/home",
     failureRedirect: "/api/customer/login",
     failureFlash: true,
   })
 );
 
 // GET request for register
-router.get("/register", (req, res) => {
+router.get("/register", checkNotAuthenticated, (req, res) => {
   res.render("customer-register.ejs");
 });
 
 // Post request for register
-router.post("/register", (req, res) => {
+router.post("/register", checkNotAuthenticated, (req, res) => {
   // TODO: Get acutal the customer document from our database
   var query = schema.Customer.find();
 
@@ -87,7 +91,7 @@ router.post("/register", (req, res) => {
       // Put the user and password in our database
       users.push({
         // This would be automatically generated in our database
-        id: Date.now().toString,
+        id: Date.now().toString(),
         name: req.body.name,
         email: req.body.email,
         password: hash,
@@ -102,6 +106,21 @@ router.post("/register", (req, res) => {
   console.log(users);
 });
 
+// Middleware
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+
+  res.redirect("/api/customer/login");
+}
+
+function checkNotAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return res.redirect("/api/customer/home");
+  }
+  next();
+}
 // --------------------------------------------------------------------- TRUCK LOCATION ---------------------------------------------------------------------//
 // Get Request to show the nearby 5 trucks to the customer
 router.get("/nearby/:longitude,:latitude", (req, res) => {
