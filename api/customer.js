@@ -1,35 +1,15 @@
-const router = require("express").Router();
-const schema = require("./schemas");
-
-function coordDistance(a, b) {
-  dlat = a.latitude - b.latitude;
-  dlong = a.longitude - b.longitude;
-  return Math.sqrt(dlat * dlat + dlong * dlong);
+// Check if we are in production or development
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
 
-// Routes for Authentication
+const express = require("express");
+const router = express.Router();
+const schema = require("./schemas");
 
-// GET request for login
-router.get("/login", (req, res) => {
-  res.render("customer-login.ejs");
-});
+router.use(express.urlencoded({ extended: true }));
 
-// Post request for login
-router.post("/login", (req, res) => {
-  //
-  var query = schema.Customer.find();
-});
-
-// GET request for register
-router.get("/register", (req, res) => {
-  res.render("customer-register.ejs");
-});
-
-// Post request for register
-router.post("/register", (req, res) => {
-  //
-});
-
+// --------------------------------------------------------------------- TRUCK LOCATION ---------------------------------------------------------------------//
 // Get Request to show the nearby 5 trucks to the customer
 router.get("/nearby/:longitude,:latitude", (req, res) => {
   var query = schema.Vendor.find();
@@ -55,6 +35,7 @@ router.get("/nearby/:longitude,:latitude", (req, res) => {
   });
 });
 
+// -------------------------------------------------------------------  MENU -----------------------------------------------------------------------//
 // Get the menu displayed to the customer
 router.get("/menu", (req, res) => {
   var query = schema.Item.find();
