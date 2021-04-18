@@ -10,6 +10,7 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
+const methodOverride = require("method-override");
 
 const saltRounds = 10;
 
@@ -33,6 +34,7 @@ router.use(
 );
 router.use(passport.initialize());
 router.use(passport.session());
+router.use(methodOverride("_method"));
 
 // Dummy list to hold users
 const users = [];
@@ -104,6 +106,13 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
     res.redirect("/api/customer/register");
   }
   console.log(users);
+});
+
+// Route for logging out
+router.delete("/logout", (req, res) => {
+  // Using passport to logout
+  req.logOut();
+  res.redirect("/api/customer/login");
 });
 
 // Middleware
