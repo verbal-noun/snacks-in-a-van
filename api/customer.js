@@ -11,8 +11,11 @@ const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
 
+const saltRounds = 10;
+
 const initializePassport = require("./passport-config");
 const { route } = require("./vendor");
+
 initializePassport(passport, (email) =>
   users.find((user) => user.email === email)
 );
@@ -60,7 +63,7 @@ router.post(
   "/login",
   passport.authenticate("local", {
     successRedirect: "/home",
-    failureRedirect: "/login",
+    failureRedirect: "/api/customer/login",
     failureFlash: true,
   })
 );
@@ -71,21 +74,26 @@ router.get("/register", (req, res) => {
 });
 
 // Post request for register
-router.post("/register", async (req, res) => {
+router.post("/register", (req, res) => {
   // TODO: Get acutal the customer document from our database
   var query = schema.Customer.find();
+
   // Using dummy user data to show the login
   // Generate a password hash based on user's inserted password
   try {
-    const hashedPassword = createPasswordHash(req.body.password);
-    console.log(hashedPassword);
-    users.push({
-      // This would be automatically generated in our database
-      id: Date.now().toString,
-      name: req.body.name,
-      email: req.body.email,
-      password: hashedPassword,
+    //const hashedPassword = createPasswordHash(req.body.password);
+    //console.log(hashedPassword);
+    bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+      // Put the user and password in our database
+      users.push({
+        // This would be automatically generated in our database
+        id: Date.now().toString,
+        name: req.body.name,
+        email: req.body.email,
+        password: hash,
+      });
     });
+
     res.redirect("/api/customer/login");
   } catch (error) {
     // If registering in successuful, redirect tem to login page

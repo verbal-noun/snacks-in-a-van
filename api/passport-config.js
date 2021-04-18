@@ -11,7 +11,10 @@ function initialize(passport, getUserByEmail) {
 
     try {
       // We have an authenticated user
+      console.log(`pass: ${user.password}`);
+      console.log(`input: ${password}`);
       if (await bcrypt.compare(password, user.password)) {
+        console.log("Successful login");
       }
       // The user's password did not match
       else {
