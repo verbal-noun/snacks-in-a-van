@@ -23,6 +23,7 @@ router.get("/dashboard/trucks/", (req, res) => {
         const button = document.getElementById('openBusinessButt' + {i});
         button.addEventListener('click', function(e) {
         console.log('button was clicked');
+        vendors[i].open = True;
 
         fetch('/clicked', {method: 'POST'})
          .then(function(response) {
@@ -53,7 +54,7 @@ router.get("/dashboard/trucks/", (req, res) => {
         const button = document.getElementById('closedBut' + {i});
         button.addEventListener('click', function(e) {
         console.log('Close button was clicked');
-
+        vendors[i].open = False;
         fetch('/clicked', {method: 'POST'})
          .then(function(response) {
             if(response.ok) {
