@@ -68,6 +68,19 @@ router.get("/menu", (req, res) => {
   });
 });
 
+router.get('/menu/:itemID', (req, res) => {
+    var query = schema.Item.findById(req.params.itemID);
+    query.exec((err, items) => {
+        if(err) {
+            console.log(err);
+            res.status(500).send(err);
+        }
+        else {
+            res.send(items);
+        }
+    });
+});
+
 // GET request to insert data into the menu
 router.get("/insertTestData", (req, res) => {
   schema.Item.deleteMany({}).then(() => {

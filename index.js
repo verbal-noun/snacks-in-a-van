@@ -30,6 +30,6 @@ mongoose.connect(
 );
 
 const port = 4040;
-http.listen(port, () => {
-  console.log(`listening on port *:${port}`);
+http.listen(process.env.PORT || port, () => {
+    console.log(`listening on port *:${port}`);
 });
