@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
+// App requirements
 const express = require("express");
 const router = express.Router();
 const schema = require("./schemas");

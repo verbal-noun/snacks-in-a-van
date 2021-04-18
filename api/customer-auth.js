@@ -2,6 +2,7 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
+// App dependencies
 const express = require("express");
 const router = express.Router();
 const schema = require("./schemas");
@@ -10,17 +11,20 @@ const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
 const methodOverride = require("method-override");
-
+// Salt required for hasing customer's password
 const saltRounds = 10;
 
+// Load the passport.js config from the setup
 const initializePassport = require("./passport-config");
 
+// Initialise a session with the User's email and ID
 initializePassport(
   passport,
   (email) => users.find((user) => user.email === email),
   (id) => users.find((user) => user.id === id)
 );
 
+// Middleware
 router.use(express.urlencoded({ extended: true }));
 router.use(flash());
 router.use(
@@ -33,6 +37,25 @@ router.use(
 router.use(passport.initialize());
 router.use(passport.session());
 router.use(methodOverride("_method"));
+
+// Middleware - helper function
+// Function which restricts unauthenticated users
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+
+  res.redirect("/api/customer/login");
+}
+
+// Function which restricts authenticated users from
+// Accessing login and rego page
+function checkNotAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return res.redirect("/api/customer/home");
+  }
+  next();
+}
 
 // Dummy list to hold users
 const users = [];
@@ -55,6 +78,7 @@ router.post(
   passport.authenticate("local", {
     successRedirect: "/api/customer/home",
     failureRedirect: "/api/customer/login",
+    // Shows error messages
     failureFlash: true,
   })
 );
@@ -72,8 +96,6 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
   // Using dummy user data to show the login
   // Generate a password hash based on user's inserted password
   try {
-    //const hashedPassword = createPasswordHash(req.body.password);
-    //console.log(hashedPassword);
     bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
       // Put the user and password in our database
       users.push({
@@ -85,9 +107,10 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
       });
     });
 
+    // Redirect user back to login if successful
     res.redirect("/api/customer/login");
   } catch (error) {
-    // If registering in successuful, redirect tem to login page
+    // If registering in unsuccessuful, redirect them back to registration page
     res.redirect("/api/customer/register");
   }
   console.log(users);
@@ -99,21 +122,5 @@ router.delete("/logout", (req, res) => {
   req.logOut();
   res.redirect("/api/customer/login");
 });
-
-// Middleware
-function checkAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-
-  res.redirect("/api/customer/login");
-}
-
-function checkNotAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return res.redirect("/api/customer/home");
-  }
-  next();
-}
 
 module.exports = router;
