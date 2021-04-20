@@ -68,4 +68,4 @@ router.get("/dashboard/trucks/", (req, res) => {
        .catch(function(error) {
           console.log(error);
         });
-    });
+      });

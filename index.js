@@ -19,7 +19,7 @@ app.set("view-engine", "ejs");
 // TODO: Change this to an official database
 // Don't forget to add user to database to grant read and write access
 mongoose.connect(
-  process.env.DATABASE_URL,
+  "mongodb+srv://root:testtest@cluster0.iyw6v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -35,5 +35,5 @@ mongoose.connect(
 
 const port = 4040;
 http.listen(process.env.PORT || port, () => {
-    console.log(`listening on port *:${port}`);
+  console.log(`listening on port *:${port}`);
 });
