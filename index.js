@@ -19,7 +19,7 @@ app.set("view-engine", "ejs");
 // TODO: Change this to an official database
 // Don't forget to add user to database to grant read and write access
 mongoose.connect(
-  "mongodb+srv://root:testtest@cluster0.iyw6v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  process.env.DATABASE_URL,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
