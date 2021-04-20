@@ -62,53 +62,33 @@ router.get("/menu/:itemID", (req, res) => {
   });
 });
 
-// GET request to insert data into the menu
-router.get("/insertTestData", (req, res) => {
-  schema.Item.deleteMany({}).then(() => {
-    console.log("Deleted all Items! Inserting new data...");
-    schema.Item.insertMany([
-      {
-        name: "Pizza",
-        unitPrice: 12,
-        photoURL:
-          "https://upload.wikimedia.org/wikipedia/commons/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg",
-      },
-      {
-        name: "Coffee",
-        unitPrice: 3,
-        photoURL:
-          "https://tul.imgix.net/content/article/a_list_images/best%20coffee%20in%20melbourne%204.jpg?auto=format,compress&w=1200&h=630&fit=crop",
-      },
-    ]).then(() => {
-      console.log("Done!");
+// ------------------------------------------------------------------ ORDERING --------------------------------------------------------------------//
+
+router.post("/order", (req, res) => {
+  // req.body must contain two fields: "orderItems" & "vendor"
+  // "orderItems" - List of item IDs and quantities (e.g., [{item: "123iasoi", quantity: 3}, {item: "abc123", quantity: 1}])
+  // "vendor" - Which vendor is this order directed to
+  // TODO: Needs to keep track of author (user who posted order)
+  schema.OrderItem.insertMany(req.body.orderItems).then((docs) => {
+    console.log("Order items successfully processed!");
+    console.log(docs);
+    console.log("Generating order...");
+    schema.Order.insertMany([{
+      vendor: req.body.vendor,
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+      items: docs,
+      discounted: false
+    }]).then((docs) => {
+      console.log("Order successfully processed!");
+      console.log(docs);
+      res.send("Order successfully processed!");
+    }).catch((err) => {
+      res.send(err);
     });
+  }).catch((err) => {
+    res.send(err);
   });
-  //   schema.Vendor.deleteMany({}).then(() => {
-  //     console.log("Deleted all Vendors! Inserting new data...");
-  //     schema.Vendor.insertMany([
-  //       {
-  //         name: "First Vendor",
-  //         open: true,
-  //         address: "123 PooPoo street",
-  //         position: {
-  //           longitude: 144.9586607,
-  //           latitude: -37.8015618,
-  //         },
-  //       },
-  //       {
-  //         name: "First Vendor",
-  //         open: true,
-  //         address: "123 PooPoo street",
-  //         position: {
-  //           longitude: 699.9586607,
-  //           latitude: -100.8015618,
-  //         },
-  //       },
-  //     ]).then(() => {
-  //       console.log("Done!");
-  //     });
-  //   });
-  res.send("Inserted new items to database.");
 });
 
 module.exports = router;
