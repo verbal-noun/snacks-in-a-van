@@ -20,15 +20,12 @@ router.get("/dashboard/trucks/", (req, res) => {
     } else {
       for (let i = 0; i < vendors.length; i++) {
         vendors[i] = vendors[i].toJSON();
-        const button = document.getElementById('openBusinessButt' + {i});
-        button.addEventListener('click', function(e) {
-        console.log('button was clicked');
-        vendors[i].open = True;
 
-        fetch('/clicked', {method: 'POST'})
-         .then(function(response) {
-            if(response.ok) {
-              console.log('Open for business click was recorded');
+        route.post('/dashboard/trucks/', function(open){
+          vendors[i].open = True;
+          return open;
+        });
+
           
         
             return;
@@ -51,18 +48,10 @@ router.get("/dashboard/trucks/", (req, res) => {
     } else {
       for (let i = 0; i < vendors.length; i++) {
         vendors[i] = vendors[i].toJSON();
-        const button = document.getElementById('closedBut' + {i});
-        button.addEventListener('click', function(e) {
-        console.log('Close button was clicked');
-        vendors[i].open = False;
-        fetch('/clicked', {method: 'POST'})
-         .then(function(response) {
-            if(response.ok) {
-              console.log('click was recorded');
-          
-        
-            return;
-          }
+        route.post('/dashboard/trucks/', function(close){
+          vendors[i].open = False;
+          return close;
+        });
           throw new Error('Request failed.');
        })
        .catch(function(error) {
