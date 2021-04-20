@@ -11,7 +11,7 @@ const schema = require("./schemas");
 router.use(express.urlencoded({ extended: true }));
 
 // --------------------------------------------------------------------- TRUCK LOCATION ---------------------------------------------------------------------//
-// Get Request to show the nearby 5 trucks to the customer
+// GET Request to show the nearby 5 trucks to the customer
 router.get("/nearby/:longitude,:latitude", (req, res) => {
   var query = schema.Vendor.find();
   query.exec((err, vendors) => {
@@ -37,7 +37,7 @@ router.get("/nearby/:longitude,:latitude", (req, res) => {
 });
 
 // -------------------------------------------------------------------  MENU -----------------------------------------------------------------------//
-// Get the menu displayed to the customer
+// GET request for fetching the menu displayed to the customer
 router.get("/menu", (req, res) => {
   var query = schema.Item.find();
   query.exec((err, items) => {
@@ -50,6 +50,7 @@ router.get("/menu", (req, res) => {
   });
 });
 
+// GET request for fetching an item's information
 router.get("/menu/:itemID", (req, res) => {
   var query = schema.Item.findById(req.params.itemID);
   query.exec((err, items) => {
@@ -63,7 +64,7 @@ router.get("/menu/:itemID", (req, res) => {
 });
 
 // ------------------------------------------------------------------ ORDERING --------------------------------------------------------------------//
-
+// POST request for submitting an order
 router.post("/order", (req, res) => {
   // req.body must contain two fields: "orderItems" & "vendor"
   // "orderItems" - List of item IDs and quantities (e.g., [{item: "123iasoi", quantity: 3}, {item: "abc123", quantity: 1}])
