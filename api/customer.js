@@ -69,19 +69,19 @@ router.post("/order", (req, res) => {
   // "orderItems" - List of item IDs and quantities (e.g., [{item: "123iasoi", quantity: 3}, {item: "abc123", quantity: 1}])
   // "vendor" - Which vendor is this order directed to
   // TODO: Needs to keep track of author (user who posted order)
-  schema.OrderItem.insertMany(req.body.orderItems).then((docs) => {
+  schema.OrderItem.insertMany(req.body.orderItems).then((orderItems) => {
     console.log("Order items successfully processed!");
-    console.log(docs);
+    console.log(orderItems);
     console.log("Generating order...");
     schema.Order.insertMany([{
       vendor: req.body.vendor,
       createdAt: new Date(),
       modifiedAt: new Date(),
-      items: docs,
+      items: orderItems,
       discounted: false
-    }]).then((docs) => {
+    }]).then((order) => {
       console.log("Order successfully processed!");
-      console.log(docs);
+      console.log(order);
       res.send("Order successfully processed!");
     }).catch((err) => {
       res.send(err);
