@@ -11,6 +11,8 @@ const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
 const methodOverride = require("method-override");
+const jwt = require("jwt-simple");
+
 // Salt required for hasing customer's password
 const saltRounds = 10;
 
@@ -97,6 +99,8 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
   // Generate a password hash based on user's inserted password
   try {
     bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+      // Generate JWT Token
+      const jwtToken = jwt.encode(req.body.password, process.env.JWT_SECRET);
       // Put the user and password in our database
       users.push({
         // This would be automatically generated in our database
@@ -104,6 +108,7 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
         name: req.body.name,
         email: req.body.email,
         password: hash,
+        token: jwtToken,
       });
     });
 
