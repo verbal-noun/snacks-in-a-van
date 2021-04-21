@@ -7,9 +7,25 @@ const customerAPI = require("./api/customer");
 const vendorAPI = require("./api/vendor");
 const customerAuthAPI = require("./api/customer-auth");
 
+const passport = require("passport");
+const flash = require("express-flash");
+const session = require("express-session");
+const methodOverride = require("method-override");
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// Middleware
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
+// app.use(flash());
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
+// app.use(passport.initialize());
+// app.use(passport.session());
+// app.use(methodOverride("_method"));
 
 app.use("/api/customer", customerAPI);
 app.use("/api/vendor", vendorAPI);
@@ -85,7 +101,6 @@ app.get("/api/insertTestData", (req, res) => {
   });
   res.send("Inserted new items to database.");
 });
-
 
 const port = 4040;
 http.listen(process.env.PORT || port, () => {
