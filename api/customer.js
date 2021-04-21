@@ -31,6 +31,7 @@ users = [
 const initialisePassportBearer = require("../config/passport-token-config");
 
 initialisePassportBearer(passport, (token) =>
+  // TODO: Finds the user based on token from the database
   users.find((user) => user.token === token)
 );
 // Middleware
@@ -100,37 +101,41 @@ router.get("/menu/:itemID", (req, res) => {
 
 // ------------------------------------------------------------------ ORDERING --------------------------------------------------------------------//
 
-router.post("/order", (req, res) => {
-  // req.body must contain two fields: "orderItems" & "vendor"
-  // "orderItems" - List of item IDs and quantities (e.g., [{item: "123iasoi", quantity: 3}, {item: "abc123", quantity: 1}])
-  // "vendor" - Which vendor is this order directed to
-  // TODO: Needs to keep track of author (user who posted order)
-  schema.OrderItem.insertMany(req.body.orderItems)
-    .then((orderItems) => {
-      console.log("Order items successfully processed!");
-      console.log(orderItems);
-      console.log("Generating order...");
-      schema.Order.insertMany([
-        {
-          vendor: req.body.vendor,
-          createdAt: new Date(),
-          modifiedAt: new Date(),
-          items: orderItems,
-          discounted: false,
-        },
-      ])
-        .then((order) => {
-          console.log("Order successfully processed!");
-          console.log(order);
-          res.send("Order successfully processed!");
-        })
-        .catch((err) => {
-          res.send(err);
-        });
-    })
-    .catch((err) => {
-      res.send(err);
-    });
-});
+router.post(
+  "/order",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    // req.body must contain two fields: "orderItems" & "vendor"
+    // "orderItems" - List of item IDs and quantities (e.g., [{item: "123iasoi", quantity: 3}, {item: "abc123", quantity: 1}])
+    // "vendor" - Which vendor is this order directed to
+    // TODO: Needs to keep track of author (user who posted order)
+    schema.OrderItem.insertMany(req.body.orderItems)
+      .then((orderItems) => {
+        console.log("Order items successfully processed!");
+        console.log(orderItems);
+        console.log("Generating order...");
+        schema.Order.insertMany([
+          {
+            vendor: req.body.vendor,
+            createdAt: new Date(),
+            modifiedAt: new Date(),
+            items: orderItems,
+            discounted: false,
+          },
+        ])
+          .then((order) => {
+            console.log("Order successfully processed!");
+            console.log(order);
+            res.send("Order successfully processed!");
+          })
+          .catch((err) => {
+            res.send(err);
+          });
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+  }
+);
 
 module.exports = router;

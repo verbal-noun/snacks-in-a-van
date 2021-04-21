@@ -22,6 +22,7 @@ const initializePassport = require("../config/passport-local-config");
 // Initialise a session with the User's email and ID
 initializePassport(
   passport,
+  // TODO:: Change the callbacks to find user from database instead
   (email) => users.find((user) => user.email === email),
   (id) => users.find((user) => user.id === id)
 );
@@ -83,6 +84,8 @@ router.post(
     // Shows error messages
     failureFlash: true,
   })
+
+  // TODO: Populate JWT Token and insert to the database
 );
 
 // GET request for register
