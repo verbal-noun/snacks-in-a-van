@@ -18,8 +18,8 @@ router.post("/open", (req, res) => {
     });
     query.exec((err, updated) => {
         if(err) {
-            console.log(err);
-            res.status(500).send(err);
+            console.log(err.message);
+            res.status(500).send(err.message);
         } else {
             res.send(updated);
         }
@@ -32,8 +32,8 @@ router.post("/close", (req, res) => {
     var query = schema.Vendor.findByIdAndUpdate(vendorID, {open: false});
     query.exec((err, updated) => {
         if(err) {
-            console.log(err);
-            res.status(500).send(err);
+            console.log(err.message);
+            res.status(500).send(err.message);
         } else {
             res.send(updated);
         }
@@ -49,8 +49,8 @@ router.post("/relocate", (req, res) => {
     });
     query.exec((err, updated) => {
         if(err) {
-            console.log(err);
-            res.status(500).send(err);
+            console.log(err.message);
+            res.status(500).send(err.message);
         } else {
             res.send(updated);
         }
@@ -64,8 +64,8 @@ router.get("/orders", (req, res) => {
     var query = schema.Order.find({vendor: vendorID, status: "Preparing"});
     query.exec((err, orders) => {
         if(err) {
-            console.log(err);
-            res.status(500).send(err);
+            console.log(err.message);
+            res.status(500).send(err.message);
         } else {
             res.send(orders);
         }
@@ -77,8 +77,8 @@ router.get("/order/:orderID", (req, res) => {
     var query = schema.Order.findById(req.params.orderID);
     query.exec((err, orders) => {
         if(err) {
-            console.log(err);
-            res.status(500).send(err);
+            console.log(err.message);
+            res.status(500).send(err.message);
         } else {
             res.send(orders);
         }
@@ -90,8 +90,8 @@ router.post("/fulfillOrder", (req, res) => {
     var query = schema.Order.findById(req.body.order, {status: "Ready for pickup"});
     query.exec((err, updated) => {
         if(err) {
-            console.log(err);
-            res.status(500).send(err);
+            console.log(err.message);
+            res.status(500).send(err.message);
         } else {
             res.send(updated);
         }

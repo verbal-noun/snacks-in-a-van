@@ -16,8 +16,8 @@ router.get("/nearby/:longitude,:latitude", (req, res) => {
   var query = schema.Vendor.find();
   query.exec((err, vendors) => {
     if (err) {
-      console.log(err);
-      res.status(500).send(err);
+      console.log(err.message);
+      res.status(500).send(err.message);
     } else {
       for (let i = 0; i < vendors.length; i++) {
         vendors[i] = vendors[i].toJSON();
@@ -42,8 +42,8 @@ router.get("/menu", (req, res) => {
   var query = schema.Item.find();
   query.exec((err, items) => {
     if (err) {
-      console.log(err);
-      res.status(500).send(err);
+      console.log(err.message);
+      res.status(500).send(err.message);
     } else {
       res.send(items);
     }
@@ -55,8 +55,8 @@ router.get("/menu/:itemID", (req, res) => {
   var query = schema.Item.findById(req.params.itemID);
   query.exec((err, items) => {
     if (err) {
-      console.log(err);
-      res.status(500).send(err);
+      console.log(err.message);
+      res.status(500).send(err.message);
     } else {
       res.send(items);
     }
@@ -85,10 +85,10 @@ router.post("/order", (req, res) => {
       console.log(order);
       res.send("Order successfully processed!");
     }).catch((err) => {
-      res.send(err);
+      res.send(err.message);
     });
   }).catch((err) => {
-    res.send(err);
+    res.send(err.message);
   });
 });
 
