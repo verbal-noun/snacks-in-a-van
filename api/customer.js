@@ -7,8 +7,45 @@ if (process.env.NODE_ENV !== "production") {
 const express = require("express");
 const router = express.Router();
 const schema = require("./schemas");
+const passport = require("passport");
 
+// Dummy list to hold users
+users = [
+  {
+    id: 1,
+    name: "jack",
+    token: "123456789",
+    displayName: "Jack",
+    emails: [{ value: "jack@example.com" }],
+  },
+  {
+    id: 2,
+    name: "jill",
+    token: "abcdefghi",
+    displayName: "Jill",
+    emails: [{ value: "jill@example.com" }],
+  },
+];
+
+// Load auth-token config
+const initialisePassportBearer = require("../config/passport-token-config");
+
+initialisePassportBearer(passport, (token) =>
+  // TODO: Finds the user based on token from the database
+  users.find((user) => user.token === token)
+);
+// Middleware
 router.use(express.urlencoded({ extended: true }));
+
+// --------------------------------------------------------------------- AUTH TOKEN TEST ---------------------------------------------------------------------//
+
+router.get(
+  "/authTokenTest",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    res.json({ name: req.user.name, email: req.user.emails[0].value });
+  }
+);
 
 // --------------------------------------------------------------------- TRUCK LOCATION ---------------------------------------------------------------------//
 // GET Request to show the nearby 5 trucks to the customer

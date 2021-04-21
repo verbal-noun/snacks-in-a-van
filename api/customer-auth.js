@@ -11,6 +11,8 @@ const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
 const methodOverride = require("method-override");
+const jwt = require("jwt-simple");
+
 // Salt required for hasing customer's password
 const saltRounds = 10;
 
@@ -20,6 +22,7 @@ const initializePassport = require("../config/passport-local-config");
 // Initialise a session with the User's email and ID
 initializePassport(
   passport,
+  // TODO:: Change the callbacks to find user from database instead
   (email) => users.find((user) => user.email === email),
   (id) => users.find((user) => user.id === id)
 );
@@ -81,6 +84,8 @@ router.post(
     // Shows error messages
     failureFlash: true,
   })
+
+  // TODO: Populate JWT Token and insert to the database
 );
 
 // GET request for register
@@ -97,6 +102,8 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
   // Generate a password hash based on user's inserted password
   try {
     bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+      // Generate JWT Token
+      const jwtToken = jwt.encode(req.body.password, process.env.JWT_SECRET);
       // Put the user and password in our database
       users.push({
         // This would be automatically generated in our database
@@ -104,6 +111,7 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
         name: req.body.name,
         email: req.body.email,
         password: hash,
+        token: jwtToken,
       });
     });
 
