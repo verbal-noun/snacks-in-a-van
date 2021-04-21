@@ -42,16 +42,44 @@ app.get("/api/insertTestData", (req, res) => {
     console.log("Deleted all Items! Inserting new data...");
     schema.Item.insertMany([
       {
-        name: "Pizza",
-        unitPrice: 12,
-        photoURL:
-          "https://upload.wikimedia.org/wikipedia/commons/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg",
+        name: "Cappuccino",
+        unitPrice: 5,
+        photoURL: "https://images.unsplash.com/photo-1472973681244-f5bcc808ad47?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1953&q=80",
       },
       {
-        name: "Coffee",
-        unitPrice: 3,
-        photoURL:
-          "https://tul.imgix.net/content/article/a_list_images/best%20coffee%20in%20melbourne%204.jpg?auto=format,compress&w=1200&h=630&fit=crop",
+        name: "Latte",
+        unitPrice: 5,
+        photoURL: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+      },
+      {
+        name: "Flat White",
+        unitPrice: 5,
+        photoURL: "https://images.unsplash.com/photo-1536974649822-bd356544c980?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80"
+      },
+      {
+        name: "Long Black",
+        unitPrice: 5,
+        photoURL: "https://images.unsplash.com/photo-1517789439268-317443633a0b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+      },
+      {
+        name: "Plain Biscuit",
+        unitPrice: 1,
+        photoURL: "https://images.unsplash.com/photo-1601318907950-778691dabde7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80"
+      },
+      {
+        name: "Fancy Biscuit",
+        unitPrice: 2,
+        photoURL: "https://images.unsplash.com/photo-1588195540875-63c2be0f60ae?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=815&q=80"
+      },
+      {
+        name: "Small Cake",
+        unitPrice: 15,
+        photoURL: "https://images.unsplash.com/photo-1562440499-64c9a111f713?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80"
+      },
+      {
+        name: "Big Cake",
+        unitPrice: 25,
+        photoURL: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=980&q=80"
       },
     ]).then(() => {
       console.log("Done!");
@@ -62,21 +90,30 @@ app.get("/api/insertTestData", (req, res) => {
     console.log("Deleted all Vendors! Inserting new data...");
     schema.Vendor.insertMany([
       {
-        name: "First Vendor",
+        name: "Vendor 1",
         open: true,
-        address: "123 PooPoo street",
+        address: "206 Berkley Street, Carlton VIC 3053",
         position: {
           longitude: 144.9586607,
-          latitude: -37.8015618,
+          latitude: -37.8015618
         },
       },
       {
-        name: "Another Vendor",
-        open: true,
-        address: "69 PeePee street",
+        name: "Vendor 2",
+        open: false,
+        address: "173 Wilson Ave, Parkville VIC 3052",
         position: {
-          longitude: 699.9586607,
-          latitude: -100.8015618,
+          longitude: 144.9607354,
+          latitude: -37.799817
+        },
+      },
+      {
+        name: "Vendor 3",
+        open: false,
+        address: "260 La Trobe Street, Melbourne VIC 3000",
+        position: {
+          longitude: 144.9612872,
+          latitude: -37.8103644
         },
       },
     ]).then(() => {
