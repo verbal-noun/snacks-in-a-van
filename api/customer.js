@@ -11,13 +11,13 @@ const schema = require("./schemas");
 router.use(express.urlencoded({ extended: true }));
 
 // --------------------------------------------------------------------- TRUCK LOCATION ---------------------------------------------------------------------//
-// Get Request to show the nearby 5 trucks to the customer
+// GET Request to show the nearby 5 trucks to the customer
 router.get("/nearby/:longitude,:latitude", (req, res) => {
   var query = schema.Vendor.find();
   query.exec((err, vendors) => {
     if (err) {
-      console.log(err);
-      res.status(500).send(err);
+      console.log(err.message);
+      res.status(500).send(err.message);
     } else {
       for (let i = 0; i < vendors.length; i++) {
         vendors[i] = vendors[i].toJSON();
@@ -37,25 +37,26 @@ router.get("/nearby/:longitude,:latitude", (req, res) => {
 });
 
 // -------------------------------------------------------------------  MENU -----------------------------------------------------------------------//
-// Get the menu displayed to the customer
+// GET request for fetching the menu displayed to the customer
 router.get("/menu", (req, res) => {
   var query = schema.Item.find();
   query.exec((err, items) => {
     if (err) {
-      console.log(err);
-      res.status(500).send(err);
+      console.log(err.message);
+      res.status(500).send(err.message);
     } else {
       res.send(items);
     }
   });
 });
 
+// GET request for fetching an item's information
 router.get("/menu/:itemID", (req, res) => {
   var query = schema.Item.findById(req.params.itemID);
   query.exec((err, items) => {
     if (err) {
-      console.log(err);
-      res.status(500).send(err);
+      console.log(err.message);
+      res.status(500).send(err.message);
     } else {
       res.send(items);
     }
@@ -63,7 +64,7 @@ router.get("/menu/:itemID", (req, res) => {
 });
 
 // ------------------------------------------------------------------ ORDERING --------------------------------------------------------------------//
-
+// POST request for submitting an order
 router.post("/order", (req, res) => {
   // req.body must contain two fields: "orderItems" & "vendor"
   // "orderItems" - List of item IDs and quantities (e.g., [{item: "123iasoi", quantity: 3}, {item: "abc123", quantity: 1}])
@@ -89,11 +90,11 @@ router.post("/order", (req, res) => {
           res.send("Order successfully processed!");
         })
         .catch((err) => {
-          res.send(err);
+          res.send(err.message);
         });
     })
     .catch((err) => {
-      res.send(err);
+      res.send(err.message);
     });
 });
 
