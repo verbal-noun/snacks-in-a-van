@@ -27,6 +27,11 @@ users = [
 
 // Load auth-token config
 const initialisePassportBearer = require("../config/passport-token-config");
+initialisePassportBearer(
+  passport,
+  async (authToken) =>
+    await schema.Vendor.findOne({ "token.value": authToken }).exec()
+);
 
 // --------------------------------------------------------------- STATUS -----------------------------------------------------
 // POST request for opening for business
