@@ -1,1 +1,1 @@
-customer: nodemon start
+web: nodemon start
