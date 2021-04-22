@@ -3,9 +3,8 @@ const app = express();
 const http = require("http").createServer(app);
 
 const mongoose = require("mongoose");
-const customerAPI = require("./api/customer");
-const vendorAPI = require("./api/vendor");
-const customerAuthAPI = require("./api/customer-auth");
+const customerAPI = require("./api/routes/customer");
+const customerAuthAPI = require("./api/routes/customer-auth");
 
 const passport = require("passport");
 const flash = require("express-flash");
@@ -28,7 +27,6 @@ app.use(passport.session());
 app.use(methodOverride("_method"));
 
 app.use("/api/customer", customerAPI);
-app.use("/api/vendor", vendorAPI);
 app.use("/api/customer", customerAuthAPI);
 
 // Setting templating engine
@@ -39,7 +37,7 @@ mongoose.connect(
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   },
   (err) => {
     if (err) {
@@ -51,7 +49,7 @@ mongoose.connect(
 );
 
 // ------------------------------------------------------------- INSERT TEST DATA --------------------------------------------------------------
-const schema = require("./api/schemas");
+const schema = require("./api/config/schemas");
 app.get("/api/insertTestData", (req, res) => {
   schema.Item.deleteMany({}).then(() => {
     console.log("Deleted all Items! Inserting new data...");
@@ -59,42 +57,50 @@ app.get("/api/insertTestData", (req, res) => {
       {
         name: "Cappuccino",
         unitPrice: 5,
-        photoURL: "https://images.unsplash.com/photo-1472973681244-f5bcc808ad47?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1953&q=80",
+        photoURL:
+          "https://images.unsplash.com/photo-1472973681244-f5bcc808ad47?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1953&q=80",
       },
       {
         name: "Latte",
         unitPrice: 5,
-        photoURL: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+        photoURL:
+          "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
       },
       {
         name: "Flat White",
         unitPrice: 5,
-        photoURL: "https://images.unsplash.com/photo-1536974649822-bd356544c980?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80"
+        photoURL:
+          "https://images.unsplash.com/photo-1536974649822-bd356544c980?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
       },
       {
         name: "Long Black",
         unitPrice: 5,
-        photoURL: "https://images.unsplash.com/photo-1517789439268-317443633a0b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+        photoURL:
+          "https://images.unsplash.com/photo-1517789439268-317443633a0b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
       },
       {
         name: "Plain Biscuit",
         unitPrice: 1,
-        photoURL: "https://images.unsplash.com/photo-1601318907950-778691dabde7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80"
+        photoURL:
+          "https://images.unsplash.com/photo-1601318907950-778691dabde7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
       },
       {
         name: "Fancy Biscuit",
         unitPrice: 2,
-        photoURL: "https://images.unsplash.com/photo-1588195540875-63c2be0f60ae?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=815&q=80"
+        photoURL:
+          "https://images.unsplash.com/photo-1588195540875-63c2be0f60ae?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=815&q=80",
       },
       {
         name: "Small Cake",
         unitPrice: 15,
-        photoURL: "https://images.unsplash.com/photo-1562440499-64c9a111f713?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80"
+        photoURL:
+          "https://images.unsplash.com/photo-1562440499-64c9a111f713?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
       },
       {
         name: "Big Cake",
         unitPrice: 25,
-        photoURL: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=980&q=80"
+        photoURL:
+          "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=980&q=80",
       },
     ]).then(() => {
       console.log("Done!");
@@ -110,7 +116,7 @@ app.get("/api/insertTestData", (req, res) => {
         address: "206 Berkley Street, Carlton VIC 3053",
         position: {
           longitude: 144.9586607,
-          latitude: -37.8015618
+          latitude: -37.8015618,
         },
       },
       {
@@ -119,7 +125,7 @@ app.get("/api/insertTestData", (req, res) => {
         address: "173 Wilson Ave, Parkville VIC 3052",
         position: {
           longitude: 144.9607354,
-          latitude: -37.799817
+          latitude: -37.799817,
         },
       },
       {
@@ -128,7 +134,7 @@ app.get("/api/insertTestData", (req, res) => {
         address: "260 La Trobe Street, Melbourne VIC 3000",
         position: {
           longitude: 144.9612872,
-          latitude: -37.8103644
+          latitude: -37.8103644,
         },
       },
     ]).then(() => {

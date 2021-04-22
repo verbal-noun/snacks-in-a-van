@@ -6,14 +6,16 @@ if (process.env.NODE_ENV !== "production") {
 // App requirements
 const express = require("express");
 const router = express.Router();
-const schema = require("./schemas");
+const schema = require("../config/schemas");
 const passport = require("passport");
 
 // Load auth-token config
 const initialisePassportBearer = require("../config/passport-token-config");
 
-initialisePassportBearer(passport, async (authToken) => 
-  await schema.Customer.findOne({'token.value' : authToken}).exec()
+initialisePassportBearer(
+  passport,
+  async (authToken) =>
+    await schema.Customer.findOne({ "token.value": authToken }).exec()
 );
 
 // --------------------------------------------------------------------- TRUCK LOCATION ---------------------------------------------------------------------//
@@ -71,31 +73,35 @@ router.get("/menu/:itemID", (req, res) => {
 
 // ------------------------------------------------------------------ ORDERING --------------------------------------------------------------------//
 // POST request for submitting an order
-router.post("/order", passport.authenticate("bearer", { session: false }), (req, res) => {
-  // req.body.orderItems - List of item IDs and quantities (e.g., [{item: "123iasoi", quantity: 3}])
-  // req.body.vendor - Which vendor is this order directed to
-  schema.OrderItem.insertMany(req.body.orderItems)
-    .then((orderItems) => {
-      schema.Order.insertMany([
-        {
-          vendor: req.body.vendor,
-          author: req.user.id,
-          createdAt: new Date(),
-          modifiedAt: new Date(),
-          items: orderItems,
-          discounted: false,
-        },
-      ])
-      .then((order) => {
-        res.send(order);
+router.post(
+  "/order",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    // req.body.orderItems - List of item IDs and quantities (e.g., [{item: "123iasoi", quantity: 3}])
+    // req.body.vendor - Which vendor is this order directed to
+    schema.OrderItem.insertMany(req.body.orderItems)
+      .then((orderItems) => {
+        schema.Order.insertMany([
+          {
+            vendor: req.body.vendor,
+            author: req.user.id,
+            createdAt: new Date(),
+            modifiedAt: new Date(),
+            items: orderItems,
+            discounted: false,
+          },
+        ])
+          .then((order) => {
+            res.send(order);
+          })
+          .catch((err) => {
+            res.status(500).send(err.message);
+          });
       })
       .catch((err) => {
         res.status(500).send(err.message);
       });
-    })
-    .catch((err) => {
-      res.status(500).send(err.message);
-    });
-});
+  }
+);
 
 module.exports = router;

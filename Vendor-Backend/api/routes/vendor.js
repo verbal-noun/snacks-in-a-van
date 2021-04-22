@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== "production") {
 
 const express = require("express");
 const router = express.Router();
-const schema = require("./schemas");
+const schema = require("../config/schemas");
 const passport = require("passport");
 // Dummy list to hold users
 users = [

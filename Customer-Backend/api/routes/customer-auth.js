@@ -14,7 +14,7 @@ const jwt = require("jwt-simple");
 const saltRounds = 10;
 
 // Load the passport.js config from the setup
-const initializePassport = require("../config/passport-token-config");
+const initializePassport = require("../config/passport-local-config");
 
 // Initialise a session with the User's email and ID
 initializePassport(

@@ -12,7 +12,7 @@ const Customer = createModel("Customer", {
     family: String,
   },
   password: String,
-  token: String
+  token: String,
 });
 
 const Vendor = createModel("Vendor", {
