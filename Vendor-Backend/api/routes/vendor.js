@@ -97,45 +97,57 @@ router.post(
 
 // --------------------------------------------------------------- ORDERS -----------------------------------------------------
 // GET request for fetching unfulfilled orders
-router.get("/orders", (req, res) => {
-  let vendorID = req.user.id;
-  var query = schema.Order.find({ vendor: vendorID, status: "Preparing" });
-  query.exec((err, orders) => {
-    if (err) {
-      console.log(err.message);
-      res.status(500).send(err.message);
-    } else {
-      res.send(orders);
-    }
-  });
-});
+router.get(
+  "/orders",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    let vendorID = req.user.id;
+    var query = schema.Order.find({ vendor: vendorID, status: "Preparing" });
+    query.exec((err, orders) => {
+      if (err) {
+        console.log(err.message);
+        res.status(500).send(err.message);
+      } else {
+        res.send(orders);
+      }
+    });
+  }
+);
 
 // GET request for fetching order details
-router.get("/order/:orderID", (req, res) => {
-  var query = schema.Order.findById(req.params.orderID);
-  query.exec((err, orders) => {
-    if (err) {
-      console.log(err.message);
-      res.status(500).send(err.message);
-    } else {
-      res.send(orders);
-    }
-  });
-});
+router.get(
+  "/order/:orderID",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    var query = schema.Order.findById(req.params.orderID);
+    query.exec((err, orders) => {
+      if (err) {
+        console.log(err.message);
+        res.status(500).send(err.message);
+      } else {
+        res.send(orders);
+      }
+    });
+  }
+);
 
 // POST request for fulfilling an order
-router.post("/fulfillOrder", (req, res) => {
-  var query = schema.Order.findById(req.body.order, {
-    status: "Ready for pickup",
-  });
-  query.exec((err, updated) => {
-    if (err) {
-      console.log(err.message);
-      res.status(500).send(err.message);
-    } else {
-      res.send(updated);
-    }
-  });
-});
+router.post(
+  "/fulfillOrder",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    var query = schema.Order.findById(req.body.order, {
+      status: "Ready for pickup",
+    });
+    query.exec((err, updated) => {
+      if (err) {
+        console.log(err.message);
+        res.status(500).send(err.message);
+      } else {
+        res.send(updated);
+      }
+    });
+  }
+);
 
 module.exports = router;
