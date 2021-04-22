@@ -13,19 +13,19 @@ const session = require("express-session");
 const methodOverride = require("method-override");
 
 // Middleware
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
-// app.use(flash());
-// app.use(
-//   session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: false,
-//   })
-// );
-// app.use(passport.initialize());
-// app.use(passport.session());
-// app.use(methodOverride("_method"));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(flash());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(methodOverride("_method"));
 
 app.use("/api/customer", customerAPI);
 app.use("/api/vendor", vendorAPI);
@@ -34,13 +34,12 @@ app.use("/api/customer", customerAuthAPI);
 // Setting templating engine
 app.set("view-engine", "ejs");
 
-// TODO: Change this to an official database
-// Don't forget to add user to database to grant read and write access
 mongoose.connect(
   process.env.DATABASE_URL,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false
   },
   (err) => {
     if (err) {
