@@ -11,6 +11,11 @@ const Customer = createModel("Customer", {
     given: String,
     family: String,
   },
+  password: String,
+  token: {
+    value: String,
+    createdAt: Date
+  }
 });
 
 const Vendor = createModel("Vendor", {
@@ -30,6 +35,7 @@ const OrderItem = createModel("OrderItem", {
 
 const Order = createModel("Order", {
   vendor: Schema.Types.ObjectId,
+  author: Schema.Types.ObjectId,
   createdAt: Date,
   modifiedAt: Date,
   rating: Schema.Types.ObjectId,
