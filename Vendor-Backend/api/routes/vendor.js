@@ -7,23 +7,6 @@ const express = require("express");
 const router = express.Router();
 const schema = require("../config/schemas");
 const passport = require("passport");
-// Dummy list to hold users
-users = [
-  {
-    id: 1,
-    name: "jack",
-    token: "123456789",
-    displayName: "Jack",
-    emails: [{ value: "jack@example.com" }],
-  },
-  {
-    id: 2,
-    name: "jill",
-    token: "abcdefghi",
-    displayName: "Jill",
-    emails: [{ value: "jill@example.com" }],
-  },
-];
 
 // Load auth-token config
 const initialisePassportBearer = require("../config/passport-token-config");
