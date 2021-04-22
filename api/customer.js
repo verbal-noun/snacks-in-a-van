@@ -9,42 +9,11 @@ const router = express.Router();
 const schema = require("./schemas");
 const passport = require("passport");
 
-// Dummy list to hold users
-users = [
-  {
-    id: 1,
-    name: "jack",
-    token: "123456789",
-    displayName: "Jack",
-    emails: [{ value: "jack@example.com" }],
-  },
-  {
-    id: 2,
-    name: "jill",
-    token: "abcdefghi",
-    displayName: "Jill",
-    emails: [{ value: "jill@example.com" }],
-  },
-];
-
 // Load auth-token config
 const initialisePassportBearer = require("../config/passport-token-config");
 
-initialisePassportBearer(passport, (token) =>
-  // TODO: Finds the user based on token from the database
-  users.find((user) => user.token === token)
-);
-// Middleware
-router.use(express.urlencoded({ extended: true }));
-
-// --------------------------------------------------------------------- AUTH TOKEN TEST ---------------------------------------------------------------------//
-
-router.get(
-  "/authTokenTest",
-  passport.authenticate("bearer", { session: false }),
-  (req, res) => {
-    res.json({ name: req.user.name, email: req.user.emails[0].value });
-  }
+initialisePassportBearer(passport, async (authToken) => 
+  await schema.Customer.findOne({'token.value' : authToken}).exec()
 );
 
 // --------------------------------------------------------------------- TRUCK LOCATION ---------------------------------------------------------------------//
@@ -102,36 +71,30 @@ router.get("/menu/:itemID", (req, res) => {
 
 // ------------------------------------------------------------------ ORDERING --------------------------------------------------------------------//
 // POST request for submitting an order
-router.post("/order", (req, res) => {
-  // req.body must contain two fields: "orderItems" & "vendor"
-  // "orderItems" - List of item IDs and quantities (e.g., [{item: "123iasoi", quantity: 3}, {item: "abc123", quantity: 1}])
-  // "vendor" - Which vendor is this order directed to
-  // TODO: Needs to keep track of author (user who posted order)
+router.post("/order", passport.authenticate("bearer", { session: false }), (req, res) => {
+  // req.body.orderItems - List of item IDs and quantities (e.g., [{item: "123iasoi", quantity: 3}])
+  // req.body.vendor - Which vendor is this order directed to
   schema.OrderItem.insertMany(req.body.orderItems)
     .then((orderItems) => {
-      console.log("Order items successfully processed!");
-      console.log(orderItems);
-      console.log("Generating order...");
       schema.Order.insertMany([
         {
           vendor: req.body.vendor,
+          author: req.user.id,
           createdAt: new Date(),
           modifiedAt: new Date(),
           items: orderItems,
           discounted: false,
         },
       ])
-        .then((order) => {
-          console.log("Order successfully processed!");
-          console.log(order);
-          res.send("Order successfully processed!");
-        })
-        .catch((err) => {
-          res.send(err.message);
-        });
+      .then((order) => {
+        res.send(order);
+      })
+      .catch((err) => {
+        res.status(500).send(err.message);
+      });
     })
     .catch((err) => {
-      res.send(err.message);
+      res.status(500).send(err.message);
     });
 });
 
