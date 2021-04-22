@@ -95,7 +95,10 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
           // Put the user and password in our database
           schema.Customer.insertMany([{
             email: req.body.email,
-            name: req.body.name,
+            name: {
+              given: req.body.givenname,
+              family: req.body.familyname,
+            },
             password: hash
           }])
           .then((doc) => {
