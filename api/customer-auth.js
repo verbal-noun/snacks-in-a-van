@@ -54,7 +54,7 @@ router.post(
   "/login",
   passport.authenticate("local", {failureFlash: true}),
   (req, res) => {
-    // Generate JWT Token using unique email and password and store it
+    // Generate JWT Token using unique email, password, and timestamp and store it
     const jwtToken = jwt.encode({
       email: req.body.email,
       password: req.body.password,
