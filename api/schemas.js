@@ -12,10 +12,7 @@ const Customer = createModel("Customer", {
     family: String,
   },
   password: String,
-  token: {
-    value: String,
-    createdAt: Date
-  }
+  token: String
 });
 
 const Vendor = createModel("Vendor", {

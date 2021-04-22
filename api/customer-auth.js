@@ -55,11 +55,12 @@ router.post(
   passport.authenticate("local", {failureFlash: true}),
   (req, res) => {
     // Generate JWT Token using unique email and password and store it
-    const jwtToken = jwt.encode(req.body.email + req.body.password, process.env.JWT_SECRET);
-    let query = schema.Customer.findOneAndUpdate({email: req.body.email}, {token: {
-      value: jwtToken,
-      createdAt: new Date()
-    }});
+    const jwtToken = jwt.encode({
+      email: req.body.email,
+      password: req.body.password,
+      timestamp: new Date()
+    }, process.env.JWT_SECRET);
+    let query = schema.Customer.findOneAndUpdate({email: req.body.email}, {token: jwtToken});
     query.exec((err, doc) => {
       if(err) {
         console.log(err.message);
