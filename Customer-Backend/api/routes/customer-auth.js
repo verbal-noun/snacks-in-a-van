@@ -41,14 +41,14 @@ function checkNotAuthenticated(req, res, next) {
 
 // GET request for home page
 router.get("/home", checkAuthenticated, (req, res) => {
-  res.render("home.ejs", {
+  res.render("../../views/home.ejs", {
     name: req.user.name.given + " " + req.user.name.family,
   });
 });
 
 // GET request for login page
 router.get("/login", checkNotAuthenticated, (req, res) => {
-  res.render("customer-login.ejs");
+  res.render("../../views/customer-login.ejs");
 });
 
 // POST request for login
@@ -82,7 +82,7 @@ router.post(
 
 // GET request for register page
 router.get("/register", checkNotAuthenticated, (req, res) => {
-  res.render("customer-register.ejs");
+  res.render("../../views/customer-register.ejs");
 });
 
 // POST request for register
