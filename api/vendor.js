@@ -28,11 +28,6 @@ users = [
 // Load auth-token config
 const initialisePassportBearer = require("../config/passport-token-config");
 
-initialisePassportBearer(passport, (token) =>
-  // TODO: Finds the user based on token from the database
-  users.find((user) => user.token === token)
-);
-
 // --------------------------------------------------------------- STATUS -----------------------------------------------------
 // POST request for opening for business
 router.post(
