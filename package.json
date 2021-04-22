@@ -2,11 +2,6 @@
     "name": "snacks-in-a-van",
     "version": "1.0.0",
     "description": "Snacks in a Van",
-    "main": "index.js",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "start": "nodemon index.js"
-    },
     "repository": {
       "type": "git",
       "url": "git+https://github.com/hasanelbanna/INFO30005-Runtime-Terror.git"
