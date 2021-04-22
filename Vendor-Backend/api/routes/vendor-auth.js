@@ -42,7 +42,7 @@ function checkNotAuthenticated(req, res, next) {
 // GET request for home page
 router.get("/home", checkAuthenticated, (req, res) => {
   res.render("home.ejs", {
-    name: req.user.name.given + " " + req.user.name.family,
+    name: req.user.name,
   });
 });
 
