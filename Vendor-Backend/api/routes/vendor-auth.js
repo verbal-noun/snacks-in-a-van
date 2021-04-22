@@ -10,7 +10,7 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const jwt = require("jwt-simple");
 
-// Salt required for hasing customer's password
+// Salt required for hasing vendor's password
 const saltRounds = 10;
 
 // Load the passport.js config from the setup
@@ -19,8 +19,8 @@ const initializePassport = require("../config/passport-local-config");
 // Initialise a session with the User's email and ID
 initializePassport(
   passport,
-  async (email) => await schema.Customer.findOne({ email }).exec(),
-  async (id) => await schema.Customer.findById(id).exec()
+  async (name) => await schema.Vendor.findOne({ name }).exec(),
+  async (id) => await schema.Vendor.findById(id).exec()
 );
 
 // Function which restricts unauthenticated users
@@ -48,7 +48,7 @@ router.get("/home", checkAuthenticated, (req, res) => {
 
 // GET request for login page
 router.get("/login", checkNotAuthenticated, (req, res) => {
-  res.render("customer-login.ejs");
+  res.render("vendor-login.ejs");
 });
 
 // POST request for login
@@ -82,15 +82,15 @@ router.post(
 
 // GET request for register page
 router.get("/register", checkNotAuthenticated, (req, res) => {
-  res.render("customer-register.ejs");
+  res.render("vendor-register.ejs");
 });
 
 // POST request for register
 router.post("/register", checkNotAuthenticated, (req, res) => {
-  var query = schema.Customer.find({ email: req.body.email });
-  query.exec((err, customers) => {
+  var query = schema.Vendor.find({ name: req.body.name });
+  query.exec((err, vendors) => {
     // Ensure user does not exist yet
-    if (err || customers.length) {
+    if (err || vendors.length) {
       res.redirect("/api/vendor/register");
     } else {
       // Generate a password hash based on user's inserted password
@@ -100,13 +100,12 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
           res.redirect("/api/vendor/register");
         } else {
           // Put the user and password in our database
-          schema.Customer.insertMany([
+          schema.Vendor.insertMany([
             {
-              email: req.body.email,
-              name: {
-                given: req.body.givenname,
-                family: req.body.familyname,
-              },
+              name: req.body.name,
+              open: false,
+              address: null,
+              position: null,
               password: hash,
             },
           ])

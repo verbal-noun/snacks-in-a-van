@@ -23,6 +23,8 @@ const Vendor = createModel("Vendor", {
     longitude: Number,
     latitude: Number,
   },
+  password: String,
+  token: String,
 });
 
 const OrderItem = createModel("OrderItem", {
