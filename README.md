@@ -46,7 +46,7 @@ actual user with _sample user_ with an actual JWT token created by the routes to
 
 #### Vendor
 
-| Name          | Password | Token                                                                                                                                                                                         |
+| Vendor Name   | Password | Token                                                                                                                                                                                         |
 | ------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | test-vendor1  | 1234     | 987654321                                                                                                                                                                                     |
 | sample-vendor | 4321     | eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic2FtcGxlLXZlbmRvciIsInBhc3N3b3JkIjoiNDMyMSIsInRpbWVzdGFtcCI6IjIwMjEtMDQtMjNUMDc6MTQ6NDkuODYwWiJ9.CrZEWdOvPC5fuTCqg2v1xWGgALif1yHvniGBxVsYBYU |
@@ -67,6 +67,10 @@ actual user with _sample user_ with an actual JWT token created by the routes to
 - _Postman Example:_
   <img src="resources/customer-view-menu.png" alt="View details of a snack screenshot">
 
+- _Usage:_
+  1. We need to make a GET request to the URL above with the id of a chosen snack.
+  2. For example, if we cant to view information about 'Cappucino' snack, we would make a GET reqeust to: https://info30005-customer-backend.herokuapp.com/api/customer/menu/60802183979a5a92d4521bff
+
 #### Customer starts a new order by requesting a snack
 
 - _Heroku URL:_ https://info30005-customer-backend.herokuapp.com/api/customer/order
@@ -74,7 +78,24 @@ actual user with _sample user_ with an actual JWT token created by the routes to
 - _Postman Example:_
   <img src="resources/customer-order.png" alt="New order request screenshot">
 
+- _Usage:_
+  1. The customer needs to be authenticated to make this type of request. Here we make the POST request with a Bearer token in the HTTP Header to indicate that this is a valid customer.
+  2. In the HTTP header of the request we need to add the following header info:
+     | Key | Value |
+     |----|---|
+     |Authorization| Bearer 1234567|
+  3. Then we need to define the body of the request with the vendor and orderItems. Vendor is the vendorID and and orderItems is a list of item object. Sample body:
+     <img src="resources/customer-order-body.png" alt="Van status request screenshot" width=350>
+
+<br>
+
 ### Vendor App API
+
+All the vendor requests need to be authenticated. Hence all of the following API calls should have the following HTTP headers in the POST and GET requests:
+
+| Key           | Value            |
+| ------------- | ---------------- |
+| Authorization | Bearer 987654321 |
 
 #### Setting van status (vendor sends location, marks van as ready-for-orders)
 
@@ -85,11 +106,17 @@ actual user with _sample user_ with an actual JWT token created by the routes to
   - https://info30005-vendor-backend.herokuapp.com/api/vendor/relocate
 
 - _Postman Example:_
-  <img src="resources/vendor-open.png" alt="Van status request screenshot">
-  <br>
-  <br>
 
-  <img src="resources/vendor-close.png" alt="Van status request screenshot">
+  - _Usage:_
+
+    1. We need to make a POST request to signal open, close or relocate to update the status of the van.
+    2. To open or relocate the business, we need to make an POST request to https://info30005-vendor-backend.herokuapp.com/api/vendor/open with address and location. We need to make sure we include the Authorization tokens as mentioned above in the headers. Sample of the body and request:
+       <img src="resources/vendor-open.png" alt="Van status request screenshot">
+       <br>
+       <br>
+
+    3. To close the business, we need to make an POST request to https://info30005-vendor-backend.herokuapp.com/api/vendor/close with address and location. We need to make sure we include the Authorization tokens as mentioned above in the headers. Sample of the body and request:
+       <img src="resources/vendor-close.png" alt="Van status request screenshot">
 
 #### Show list of all outstanding orders
 
@@ -97,11 +124,15 @@ actual user with _sample user_ with an actual JWT token created by the routes to
 
 - _Postman Example:_
 
-  <img src="resources/vendor-orders.png" alt="Van status request screenshot">
+  - _Usage:_
+    1. We need to make a POST request accordingly with the proper authorization tokens. Sample:
+       <img src="resources/vendor-orders.png" alt="Van status request screenshot">
 
 #### Mark an order as "fulfilled" (ready to be picked up by customer)
 
 - _Heroku URL:_ https://info30005-vendor-backend.herokuapp.com/api/vendor/fulfillOrder
 
 - _Postman Example:_
-  <img src="resources/vendor-fullfillOrder.png" alt="Order fulfilled request screenshot">
+  - _Usage:_
+    1. We need to make a POST request with the order we want to the transition the status of. A sample of the body and request as follows:
+       <img src="resources/vendor-fullfillOrder.png" alt="Order fulfilled request screenshot">
