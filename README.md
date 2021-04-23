@@ -79,12 +79,15 @@ actual user with _sample user_ with an actual JWT token created by the routes to
   <img src="resources/customer-order.png" alt="New order request screenshot">
 
 - _Usage:_
+
   1. The customer needs to be authenticated to make this type of request. Here we make the POST request with a Bearer token in the HTTP Header to indicate that this is a valid customer.
   2. In the HTTP header of the request we need to add the following header info:
      | Key | Value |
      |----|---|
      |Authorization| Bearer 1234567|
   3. Then we need to define the body of the request with the vendor and orderItems. Vendor is the vendorID and and orderItems is a list of item object. Sample body:
+  <br>
+
      <img src="resources/customer-order-body.png" alt="Van status request screenshot" width=350>
 
 <br>
