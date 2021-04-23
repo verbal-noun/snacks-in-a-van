@@ -12,8 +12,7 @@ const passport = require("passport");
 const initialisePassportBearer = require("../config/passport-token-config");
 initialisePassportBearer(
   passport,
-  async (authToken) =>
-    await schema.Vendor.findOne({ "token.value": authToken }).exec()
+  async (authToken) => await schema.Vendor.findOne({ token: authToken }).exec()
 );
 
 // --------------------------------------------------------------- STATUS -----------------------------------------------------
