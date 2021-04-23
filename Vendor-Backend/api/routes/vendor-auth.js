@@ -78,7 +78,7 @@ router.post(
       }
     });
 
-    res.send(jwtToken);
+    res.send(req.user);
   }
 );
 

@@ -10,8 +10,6 @@
 
 ### Team number: 13
 
-
-
 ### Team Members:
 
 | Name     | Student ID | Email                               | Working On |
@@ -22,15 +20,13 @@
 | Hasan    | 1118853    | sohi@student.unimelb.edu.au         | Front-end  |
 | Mitchell | 823604     | mneedham@student.unimelb.edu.au     | Back-end   |
 
-
-
 ## Tech Stack
 
 - Figma
 - Node.js
 - MongoDB
 - Heruko
-<br> <br>
+  <br> <br>
 
 ## API Documentation
 
@@ -41,21 +37,21 @@
 - _Heroku URL:_ https://info30005-customer-backend.herokuapp.com/api/customer/menu
 
 - _Postman Example:_
-  <img src="resources/dummypostman.png" alt="View menu of snacks screenshot">
+  <img src="resources/customer-view-menu.png" alt="View menu of snacks screenshot">
 
 #### View details of a snack
 
 - _Heroku URL:_ https://info30005-customer-backend.herokuapp.com/api/customer/menu/:itemID
 
 - _Postman Example:_
-  <img src="resources/dummypostman.png" alt="View details of a snack screenshot">
+  <img src="resources/customer-view-menu.png" alt="View details of a snack screenshot">
 
 #### Customer starts a new order by requesting a snack
 
 - _Heroku URL:_ https://info30005-customer-backend.herokuapp.com/api/customer/order
 
 - _Postman Example:_
-  <img src="resources/dummypostman.png" alt="New order request screenshot">
+  <img src="resources/customer-order.png" alt="New order request screenshot">
 
 ### Vendor App API
 
@@ -68,16 +64,23 @@
   - https://info30005-vendor-backend.herokuapp.com/api/vendor/relocate
 
 - _Postman Example:_
-  <img src="resources/dummypostman.png" alt="Van status request screenshot">
+  <img src="resources/vendor-open.png" alt="Van status request screenshot">
+  <br>
+  <br>
+
+  <img src="resources/vendor-close.png" alt="Van status request screenshot">
+
 #### Show list of all outstanding orders
 
 - _Heroku URL:_ https://info30005-vendor-backend.herokuapp.com/api/vendor/orders
 
 - _Postman Example:_
 
+  <img src="resources/vendor-orders.png" alt="Van status request screenshot">
+
 #### Mark an order as "fulfilled" (ready to be picked up by customer)
 
 - _Heroku URL:_ https://info30005-vendor-backend.herokuapp.com/api/vendor/fulfillOrder
 
 - _Postman Example:_
-  <img src="resources/dummypostman.png" alt="Order fulfilled request screenshot">
+  <img src="resources/vendor-fullfillOrder.png" alt="Order fulfilled request screenshot">
