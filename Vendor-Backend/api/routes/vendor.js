@@ -27,12 +27,21 @@ router.post(
       address: req.body.address,
       position: req.body.location,
     });
-    query.exec((err, updated) => {
+    query.exec((err) => {
       if (err) {
         console.log(err.message);
         res.status(500).send(err.message);
       } else {
-        res.send(updated);
+        //res.send(updated);
+        var newQuery = schema.Vendor.findById(vendorID);
+        newQuery.exec((err, vendor) => {
+          if (err) {
+            console.log(err.message);
+            res.status(500).send(err.message);
+          } else {
+            res.send(vendor);
+          }
+        });
       }
     });
   }
@@ -45,12 +54,21 @@ router.post(
   (req, res) => {
     let vendorID = req.user.id;
     var query = schema.Vendor.findByIdAndUpdate(vendorID, { open: false });
-    query.exec((err, updated) => {
+    query.exec((err) => {
       if (err) {
         console.log(err.message);
         res.status(500).send(err.message);
       } else {
-        res.send(updated);
+        //res.send(updated);
+        var newQuery = schema.Vendor.findById(vendorID);
+        newQuery.exec((err, vendor) => {
+          if (err) {
+            console.log(err.message);
+            res.status(500).send(err.message);
+          } else {
+            res.send(vendor);
+          }
+        });
       }
     });
   }
@@ -66,12 +84,21 @@ router.post(
       address: req.body.address,
       position: req.body.location,
     });
-    query.exec((err, updated) => {
+    query.exec((err) => {
       if (err) {
         console.log(err.message);
         res.status(500).send(err.message);
       } else {
-        res.send(updated);
+        //res.send(updated);
+        var newQuery = schema.Vendor.findById(vendorID);
+        newQuery.exec((err, vendor) => {
+          if (err) {
+            console.log(err.message);
+            res.status(500).send(err.message);
+          } else {
+            res.send(vendor);
+          }
+        });
       }
     });
   }
@@ -118,15 +145,24 @@ router.post(
   "/fulfillOrder",
   passport.authenticate("bearer", { session: false }),
   (req, res) => {
-    var query = schema.Order.findById(req.body.order, {
+    var query = schema.Order.findByIdAndUpdate(req.body.order, {
       status: "Ready for pickup",
     });
-    query.exec((err, updated) => {
+    query.exec((err) => {
       if (err) {
         console.log(err.message);
         res.status(500).send(err.message);
       } else {
-        res.send(updated);
+        //res.send(updated);
+        var newQuery = schema.Order.findById(req.body.order);
+        newQuery.exec((err, order) => {
+          if (err) {
+            console.log(err.message);
+            res.status(500).send(err.message);
+          } else {
+            res.send(order);
+          }
+        });
       }
     });
   }
