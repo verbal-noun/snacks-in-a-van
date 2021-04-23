@@ -77,6 +77,8 @@ router.post(
         res.redirect("/api/customer/home");
       }
     });
+
+    res.send(req.user);
   }
 );
 

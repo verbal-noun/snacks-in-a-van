@@ -77,6 +77,8 @@ router.post(
         res.redirect("/api/vendor/home");
       }
     });
+
+    res.send(jwtToken);
   }
 );
 
