@@ -3,6 +3,7 @@ var Strategy = require("passport-http-bearer").Strategy;
 function initialize(passport, getUserByToken) {
   authenticateUser = async (token, done) => {
     const user = await getUserByToken(token);
+    console.log(user);
 
     try {
       if (user == null) {

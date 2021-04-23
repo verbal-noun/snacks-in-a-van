@@ -15,7 +15,7 @@ const initialisePassportBearer = require("../config/passport-token-config");
 initialisePassportBearer(
   passport,
   async (authToken) =>
-    await schema.Customer.findOne({ "token.value": authToken }).exec()
+    await schema.Customer.findOne({ token: authToken }).exec()
 );
 
 // --------------------------------------------------------------------- TRUCK LOCATION ---------------------------------------------------------------------//
@@ -101,6 +101,18 @@ router.post(
       .catch((err) => {
         res.status(500).send(err.message);
       });
+  }
+);
+
+// --------------------------------------------- Test routes ------------------- ORDERING --------------------------------------------------------------------//
+
+router.get(
+  "/authTokenTest",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    console.log("Token used.");
+
+    res.send(req.user.id);
   }
 );
 
