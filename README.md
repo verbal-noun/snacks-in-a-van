@@ -32,6 +32,11 @@
 
 ### Test Credentials
 
+We used JWT tokens based on the customer/vendor email to authenticate and access restricted resources.
+
+Here we have are including a _test user_ with a fake token created manually by the admins and an
+actual user with _sample user_ with an actual JWT token created by the routes to test our routes.
+
 #### Customer
 
 | Email       | Password | Token                                                                                                                                                                                        |
@@ -41,7 +46,10 @@
 
 #### Vendor
 
-| Name | Password | Token |
+| Name          | Password | Token                                                                                                                                                                                         |
+| ------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| test-vendor1  | 1234     | 987654321                                                                                                                                                                                     |
+| sample-vendor | 4321     | eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic2FtcGxlLXZlbmRvciIsInBhc3N3b3JkIjoiNDMyMSIsInRpbWVzdGFtcCI6IjIwMjEtMDQtMjNUMDc6MTQ6NDkuODYwWiJ9.CrZEWdOvPC5fuTCqg2v1xWGgALif1yHvniGBxVsYBYU |
 
 ### Customer App API
 
