@@ -10,7 +10,7 @@
 
 ### Team number: 13
 
-<br>
+
 
 ### Team Members:
 
@@ -22,7 +22,7 @@
 | Hasan    | 1118853    | sohi@student.unimelb.edu.au         | Front-end  |
 | Mitchell | 823604     | mneedham@student.unimelb.edu.au     | Back-end   |
 
-<br>
+
 
 ## Tech Stack
 
@@ -30,7 +30,7 @@
 - Node.js
 - MongoDB
 - Heruko
-  <br>
+<br> <br>
 
 ## API Documentation
 
@@ -41,18 +41,21 @@
 - _Heroku URL:_ https://info30005-backend.herokuapp.com/api/customer/menu
 
 - _Postman Example:_
+  <img src="resources/dummypostman.png" alt="View menu of snacks screenshot">
 
 #### View details of a snack
 
 - _Heroku URL:_ https://info30005-backend.herokuapp.com/api/customer/menu/:itemID
 
 - _Postman Example:_
+  <img src="resources/dummypostman.png" alt="View details of a snack screenshot">
 
 #### Customer starts a new order by requesting a snack
 
 - _Heroku URL:_ https://info30005-backend.herokuapp.com/api/customer/order
 
 - _Postman Example:_
+  <img src="resources/dummypostman.png" alt="New order request screenshot">
 
 ### Vendor App API
 
@@ -65,7 +68,7 @@
   - https://info30005-backend.herokuapp.com/api/vendor/relocate
 
 - _Postman Example:_
-
+  <img src="resources/dummypostman.png" alt="Van status request screenshot">
 #### Show list of all outstanding orders
 
 - _Heroku URL:_ https://info30005-backend.herokuapp.com/api/vendor/orders
@@ -77,3 +80,4 @@
 - _Heroku URL:_ https://info30005-backend.herokuapp.com/api/vendor/fulfillOrder
 
 - _Postman Example:_
+  <img src="resources/dummypostman.png" alt="Order fulfilled request screenshot">
