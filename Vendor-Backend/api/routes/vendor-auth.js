@@ -59,14 +59,14 @@ router.post(
     // Generate JWT Token using unique email, password, and timestamp and store it
     const jwtToken = jwt.encode(
       {
-        email: req.body.name,
+        name: req.body.name,
         password: req.body.password,
         timestamp: new Date(),
       },
       process.env.JWT_SECRET
     );
     let query = schema.Vendor.findOneAndUpdate(
-      { email: req.body.name },
+      { name: req.body.name },
       { token: jwtToken }
     );
     query.exec((err, doc) => {
