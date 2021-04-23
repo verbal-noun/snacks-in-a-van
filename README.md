@@ -42,7 +42,7 @@ actual user with _sample user_ with an actual JWT token created by the routes to
 | Email       | Password | Token                                                                                                                                                                                        |
 | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | test@test   | 1234     | 1234567                                                                                                                                                                                      |
-| sample@user | 4321     | [Copy token](eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InNhbXBsZUB1c2VyIiwicGFzc3dvcmQiOiI0MzIxIiwidGltZXN0YW1wIjoiMjAyMS0wNC0yM1QwNzowNzo1My4yMTVaIn0.AfglmUPAmHwB6lMpFRPWvkrQenCAuM115rbJGwjmaqY) |
+| sample@user | 4321     | eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InNhbXBsZUB1c2VyIiwicGFzc3dvcmQiOiI0MzIxIiwidGltZXN0YW1wIjoiMjAyMS0wNC0yM1QwNzowNzo1My4yMTVaIn0.AfglmUPAmHwB6lMpFRPWvkrQenCAuM115rbJGwjmaqY |
 
 #### Vendor
 
