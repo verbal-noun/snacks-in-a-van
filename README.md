@@ -51,6 +51,13 @@ actual user with _sample user_ with an actual JWT token created by the routes to
 | test-vendor1  | 1234     | 987654321                                                                                                                                                                                     |
 | sample-vendor | 4321     | eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic2FtcGxlLXZlbmRvciIsInBhc3N3b3JkIjoiNDMyMSIsInRpbWVzdGFtcCI6IjIwMjEtMDQtMjNUMDc6MTQ6NDkuODYwWiJ9.CrZEWdOvPC5fuTCqg2v1xWGgALif1yHvniGBxVsYBYU |
 
+To simulate logging in as a particular user (either Vendor or Customer) on Postman, we must manualy set the
+authorization bearer. We simply copy and paste the JWT string of the user we want to log in as for the API route into the token field.
+
+- _Postman Authentication:_
+  <img src="resources/postman-auth.png" alt="Set the JWT token for routes that require authentication">
+
+
 ### Customer App API
 
 #### View menu of snacks (including pictures and prices)
@@ -69,7 +76,7 @@ actual user with _sample user_ with an actual JWT token created by the routes to
 
 - _Usage:_
   1. We need to make a GET request to the URL above with the id of a chosen snack.
-  2. For example, if we cant to view information about 'Cappucino' snack, we would make a GET reqeust to: https://info30005-customer-backend.herokuapp.com/api/customer/menu/60802183979a5a92d4521bff
+  2. For example, if we want to view information about 'Cappucino' snack, we would make a GET reqeust to: https://info30005-customer-backend.herokuapp.com/api/customer/menu/60802183979a5a92d4521bff
 
 #### Customer starts a new order by requesting a snack
 
