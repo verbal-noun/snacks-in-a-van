@@ -58,6 +58,11 @@ authorization bearer. We simply copy and paste the JWT string of the user we wan
   <img src="resources/postman-auth.png" alt="Set the JWT token for routes that require authentication">
 
 
+### Database 
+
+MongoDB connection string: mongodb+srv://root:testtest@cluster0.iyw6v.mongodb.net/snacksInAVan?retryWrites=true&w=majority
+
+
 ### Customer App API
 
 #### View menu of snacks (including pictures and prices)
