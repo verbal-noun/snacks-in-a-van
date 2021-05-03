@@ -111,20 +111,30 @@ router.put(
   (req, res) => {
     // req.body.orderID - ID of order user wants to change
     // req.body.orderItems - List of item IDs and quantities (e.g., [{item: "123iasoi", quantity: 3}])
+    let now = new Date().getTime();
     schema.Order.findOne({_id: req.body.orderID, author: req.user.id})
     .then((order) => {
-      schema.OrderItem.insertMany(req.body.orderItems)
-      .then((orderItems) => {
-        schema.Order.findByIdAndUpdate(res.body.orderID, {items: orderItems})
-          .then((order) => {
-            res.send(order);
+      let minutesElapsed = (now - order.modifiedAt.getTime()) / 60000;
+      schema.Globals.findOne({name: "orderChangeLimit"})
+      .then((variable) => {
+        if(minutesElapsed > variable.value) {
+          res.status(500).send("Time limit expired, cannot change order.");
+        }
+        else {
+          schema.OrderItem.insertMany(req.body.orderItems)
+          .then((orderItems) => {
+            schema.Order.findByIdAndUpdate(req.body.orderID, {items: orderItems})
+              .then((order) => {
+                res.send(order);
+              })
+              .catch((err) => {
+                res.status(500).send(err.message);
+              });
           })
           .catch((err) => {
             res.status(500).send(err.message);
           });
-      })
-      .catch((err) => {
-        res.status(500).send(err.message);
+        }
       });
     })
     .catch((err) => {
