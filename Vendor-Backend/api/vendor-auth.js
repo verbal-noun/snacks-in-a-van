@@ -5,22 +5,22 @@ if (process.env.NODE_ENV !== "production") {
 // App dependencies
 const express = require("express");
 const router = express.Router();
-const schema = require("../config/schemas");
+const schema = require("../../config/schemas");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const jwt = require("jwt-simple");
 
-// Salt required for hasing customer's password
+// Salt required for hasing vendor's password
 const saltRounds = 10;
 
 // Load the passport.js config from the setup
-const initializePassport = require("../config/passport-local-config");
+const initializePassport = require("../../config/passport-local-config");
 
 // Initialise a session with the User's email and ID
 initializePassport(
   passport,
-  async (email) => await schema.Customer.findOne({ email }).exec(),
-  async (id) => await schema.Customer.findById(id).exec()
+  async (name) => await schema.Vendor.findOne({ name }).exec(),
+  async (id) => await schema.Vendor.findById(id).exec()
 );
 
 // Function which restricts unauthenticated users
@@ -28,27 +28,27 @@ function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect("/api/customer/login");
+  res.redirect("/api/vendor/login");
 }
 
 // Function which restricts authenticated users from accessing login and rego page
 function checkNotAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-    return res.redirect("/api/customer/home");
+    return res.redirect("/api/vendor/home");
   }
   next();
 }
 
 // GET request for home page
 router.get("/home", checkAuthenticated, (req, res) => {
-  res.render("customer-home.ejs", {
-    name: req.user.name.given + " " + req.user.name.family,
+  res.render("vendor-home.ejs", {
+    name: req.user.name,
   });
 });
 
 // GET request for login page
 router.get("/login", checkNotAuthenticated, (req, res) => {
-  res.render("customer-login.ejs");
+  res.render("vendor-login.ejs");
 });
 
 // POST request for login
@@ -59,14 +59,14 @@ router.post(
     // Generate JWT Token using unique email, password, and timestamp and store it
     const jwtToken = jwt.encode(
       {
-        email: req.body.email,
+        name: req.body.name,
         password: req.body.password,
         timestamp: new Date(),
       },
       process.env.JWT_SECRET
     );
-    let query = schema.Customer.findOneAndUpdate(
-      { email: req.body.email },
+    let query = schema.Vendor.findOneAndUpdate(
+      { name: req.body.name },
       { token: jwtToken }
     );
     query.exec((err, doc) => {
@@ -74,7 +74,7 @@ router.post(
         console.log(err.message);
         res.status(500).send(err.message);
       } else {
-        res.redirect("/api/customer/home");
+        res.redirect("/api/vendor/home");
       }
     });
 
@@ -84,42 +84,41 @@ router.post(
 
 // GET request for register page
 router.get("/register", checkNotAuthenticated, (req, res) => {
-  res.render("customer-register.ejs");
+  res.render("vendor-register.ejs");
 });
 
 // POST request for register
 router.post("/register", checkNotAuthenticated, (req, res) => {
-  var query = schema.Customer.find({ email: req.body.email });
-  query.exec((err, customers) => {
+  var query = schema.Vendor.find({ name: req.body.name });
+  query.exec((err, vendors) => {
     // Ensure user does not exist yet
-    if (err || customers.length) {
-      res.redirect("/api/customer/register");
+    if (err || vendors.length) {
+      res.redirect("/api/vendor/register");
     } else {
       // Generate a password hash based on user's inserted password
       bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
         if (err) {
           console.log(err);
-          res.redirect("/api/customer/register");
+          res.redirect("/api/vendor/register");
         } else {
           // Put the user and password in our database
-          schema.Customer.insertMany([
+          schema.Vendor.insertMany([
             {
-              email: req.body.email,
-              name: {
-                given: req.body.givenname,
-                family: req.body.familyname,
-              },
+              name: req.body.name,
+              open: false,
+              address: null,
+              position: null,
               password: hash,
             },
           ])
             .then((doc) => {
               // Redirect user back to login if successful
-              res.redirect("/api/customer/login");
+              res.redirect("/api/vendor/login");
             })
             .catch((err) => {
               console.log(err.message);
               res.status(500).send(err.message);
-              res.redirect("/api/customer/register");
+              res.redirect("/api/vendor/register");
             });
         }
       });
@@ -131,7 +130,7 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
 router.delete("/logout", (req, res) => {
   // Using passport to logout
   req.logOut();
-  res.redirect("/api/customer/login");
+  res.redirect("/api/vendor/login");
 });
 
 module.exports = router;

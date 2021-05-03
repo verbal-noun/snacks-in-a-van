@@ -6,11 +6,11 @@ if (process.env.NODE_ENV !== "production") {
 // App requirements
 const express = require("express");
 const router = express.Router();
-const schema = require("../config/schemas");
+const schema = require("../../config/schemas");
 const passport = require("passport");
 
 // Load auth-token config
-const initialisePassportBearer = require("../config/passport-token-config");
+const initialisePassportBearer = require("../../config/passport-token-config");
 
 initialisePassportBearer(
   passport,
@@ -101,6 +101,107 @@ router.post(
       .catch((err) => {
         res.status(500).send(err.message);
       });
+  }
+);
+
+// PUT request for changing an order
+router.put(
+  "/changeOrder",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    // req.body.orderID - ID of order user wants to change
+    // req.body.orderItems - List of item IDs and quantities (e.g., [{item: "123iasoi", quantity: 3}])
+    schema.Order.findOne({_id: req.body.orderID, author: req.user.id})
+    .then((order) => {
+      schema.OrderItem.insertMany(req.body.orderItems)
+      .then((orderItems) => {
+        schema.Order.findByIdAndUpdate(res.body.orderID, {items: orderItems})
+          .then((order) => {
+            res.send(order);
+          })
+          .catch((err) => {
+            res.status(500).send(err.message);
+          });
+      })
+      .catch((err) => {
+        res.status(500).send(err.message);
+      });
+    })
+    .catch((err) => {
+      console.log(err.message);
+      res.status(500).send(err.message);
+    });
+  }
+);
+
+// DELETE request for cancelling an order (set status to Cancelled)
+router.delete(
+  "/cancelOrder",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    // req.body.orderID contains the id of the order to be cancelled
+    let now = new Date().getTime();
+    schema.Order.findOne({_id: req.body.orderID, author: req.user.id})
+    .then((item) => {
+      let minutesElapsed = (now - item.modifiedAt.getTime()) / 60000;
+      schema.Globals.findOne({name: "orderChangeLimit"})
+      .then((item) => {
+        // Only allowed within schema.Globals.orderChangeLimit minutes of ordering  
+        if(minutesElapsed > item.value) {
+          res.status(500).send("Time limit expired, cannot cancel order.");
+        }
+        else {
+          schema.Order.findOneAndUpdate(
+            {_id: req.body.orderID, author: req.user.id}, 
+            {status: "Cancelled"}
+          )
+          .then((item) => {
+            res.send(item);
+          })
+          .catch((err) => {
+            console.log(err.message);
+            res.status(500).send(err.message);
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err.message);
+        res.status(500).send(err.message);
+      });
+    })
+    .catch((err) => {
+      console.log(err.message);
+      res.status(500).send(err.message);
+    });
+  }
+);
+
+// POST request for submitting a rating for an order
+router.post(
+  "/rate",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    // req.body.orderID contains the id of the order to be rated
+    // req.body.rating contains the actual rating {value, comment}
+    schema.Order.findOne({_id: req.body.orderID, author: req.user.id})
+    .then((item) => {
+      schema.Rating.create(req.body.rating)
+      .then((rate) => {
+        console.log(rate);
+        schema.Order.findOneAndUpdate({_id: req.body.orderID, author: req.user.id}, {rating: rate._id})
+        .then((order) => {
+          res.send(order);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          res.status(500).send(err.message);
+        });
+      });
+    })
+    .catch((err) => {
+      console.log(err.message);
+      res.status(500).send(err.message);
+    });
   }
 );
 

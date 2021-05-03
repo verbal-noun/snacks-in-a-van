@@ -3,8 +3,8 @@ const app = express();
 const http = require("http").createServer(app);
 
 const mongoose = require("mongoose");
-const customerAPI = require("./api/routes/customer");
-const customerAuthAPI = require("./api/routes/customer-auth");
+const customerAPI = require("./api/customer");
+const customerAuthAPI = require("./api/customer-auth");
 
 const passport = require("passport");
 const flash = require("express-flash");

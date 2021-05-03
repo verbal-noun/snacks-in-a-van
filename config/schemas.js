@@ -59,8 +59,8 @@ const Item = createModel("Item", {
 });
 
 const Globals = createModel("Globals", {
-  orderChangeLimit: Number,
-  discountLimit: Number,
+  name: String,
+  value: Number,
 });
 
 module.exports = {

@@ -5,11 +5,11 @@ if (process.env.NODE_ENV !== "production") {
 
 const express = require("express");
 const router = express.Router();
-const schema = require("../config/schemas");
+const schema = require("../../config/schemas");
 const passport = require("passport");
 
 // Load auth-token config
-const initialisePassportBearer = require("../config/passport-token-config");
+const initialisePassportBearer = require("../../config/passport-token-config");
 initialisePassportBearer(
   passport,
   async (authToken) => await schema.Vendor.findOne({ token: authToken }).exec()

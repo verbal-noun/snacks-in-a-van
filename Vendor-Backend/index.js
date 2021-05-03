@@ -3,8 +3,8 @@ const app = express();
 const http = require("http").createServer(app);
 
 const mongoose = require("mongoose");
-const vendorAPI = require("./api/routes/vendor");
-const vendorAuthAPI = require("./api/routes/vendor-auth");
+const vendorAPI = require("./api/vendor");
+const vendorAuthAPI = require("./api/vendor-auth");
 
 const passport = require("passport");
 const flash = require("express-flash");
