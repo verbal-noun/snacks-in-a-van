@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
+const cors = require('cors');
 
 const mongoose = require("mongoose");
 const vendorAPI = require("./api/vendor");
@@ -12,14 +13,7 @@ const session = require("express-session");
 const methodOverride = require("method-override");
 
 // Middleware
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://info30005-vendor-frontend.herokuapp.com/");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(flash());
