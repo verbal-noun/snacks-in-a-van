@@ -18,6 +18,12 @@ initialisePassportBearer(
     await schema.Customer.findOne({ token: authToken }).exec()
 );
 
+function coordDistance(a, b) {
+  let dlong = a.longitude - b.longitude;
+  let dlat = a.latitude - b.latitude;
+  return Math.sqrt(dlong*dlong + dlat*dlat);
+}
+
 // --------------------------------------------------------------------- TRUCK LOCATION ---------------------------------------------------------------------//
 // GET Request to show the nearby 5 trucks to the customer
 router.get("/nearby/:longitude,:latitude", (req, res) => {
