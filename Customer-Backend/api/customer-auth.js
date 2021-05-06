@@ -74,9 +74,10 @@ router.post(
         console.log(err.message);
         res.status(500).send(err.message);
       }
+      else {
+        res.send({token: jwtToken});
+      }
     });
-
-    res.send(req.user);
   }
 );
 
