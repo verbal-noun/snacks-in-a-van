@@ -50,6 +50,22 @@ router.get("/nearby/:longitude,:latitude", (req, res) => {
   });
 });
 
+// GET Request for fetching the information of a specific vendor
+router.get("/vendor/:vendorID", (req, res) => {
+  var query = schema.Vendor.findById(req.params.vendorID);
+  query.exec((err, vendor) => {
+    if(err) {
+      console.log(err.message);
+      res.status(500).send(err.message);
+    } else {
+      let obj = vendor.toJSON();
+      delete obj.password;
+      delete obj.token;
+      res.send(obj);
+    }
+  });
+});
+
 // -------------------------------------------------------------------  MENU -----------------------------------------------------------------------//
 // GET request for fetching the menu displayed to the customer
 router.get("/menu", (req, res) => {
