@@ -10,7 +10,7 @@ const schema = require("../../config/schemas");
 const passport = require("passport");
 
 // Load auth-token config
-const initialisePassportBearer = require("../../config/passport-token-config");
+const initialisePassportBearer = require("../passport/token-config");
 
 initialisePassportBearer(
   passport,

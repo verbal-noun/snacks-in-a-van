@@ -14,7 +14,7 @@ const jwt = require("jwt-simple");
 const saltRounds = 10;
 
 // Load the passport.js config from the setup
-const initializePassport = require("../../config/passport-local-config");
+const initializePassport = require("../passport/local-config");
 
 // Initialise a session with the User's email and ID
 initializePassport(
@@ -73,8 +73,6 @@ router.post(
       if (err) {
         console.log(err.message);
         res.status(500).send(err.message);
-      } else {
-        res.redirect("/api/customer/home");
       }
     });
 
