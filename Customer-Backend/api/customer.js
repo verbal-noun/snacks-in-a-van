@@ -52,7 +52,7 @@ router.get("/nearby/:longitude,:latitude", (req, res) => {
 });
 
 // GET Request for fetching the information of a specific vendor
-router.get("/vendor/:vendorID", (req, res) => {
+router.get("/getVendor/:vendorID", (req, res) => {
   var query = schema.Vendor.findById(req.params.vendorID);
   query.exec((err, vendor) => {
     if(err) {
