@@ -19,9 +19,10 @@ initialisePassportBearer(
 );
 
 function coordDistance(a, b) {
-  let dlong = a.longitude - b.longitude;
-  let dlat = a.latitude - b.latitude;
-  return Math.sqrt(dlong*dlong + dlat*dlat);
+  let degLen = 110.25;
+  let x = a.latitude - b.latitude;
+  let y = Math.cos(b.latitude) * (a.longitude - b.longitude);
+  return degLen * Math.sqrt(x*x + y*y);
 }
 
 // --------------------------------------------------------------------- TRUCK LOCATION ---------------------------------------------------------------------//
