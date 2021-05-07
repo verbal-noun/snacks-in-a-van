@@ -1,4 +1,6 @@
-## INFO30005 Deliverable 2 - Mockup App Server
+# Runtime Terror Back-end Repository
+## INFO30005 Deliverable 3 - Frontend + Backend (Customer App)
+
 
 <br>
 
@@ -22,11 +24,18 @@
 
 ## Tech Stack
 
-- Figma
-- Node.js
-- MongoDB
-- Heruko
-  <br> <br>
+- Front-end
+  - Figma
+  - CSS
+  - React Native
+  - Bootstrap
+
+- Back-end
+  - Node.js
+  - MongoDB
+  - Heruko
+  
+<br> <br>
 
 ## API Documentation
 
