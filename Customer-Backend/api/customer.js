@@ -94,6 +94,22 @@ router.get("/menu/:itemID", (req, res) => {
 });
 
 // ------------------------------------------------------------------ ORDERING --------------------------------------------------------------------//
+// GET request for listing all active orders
+router.get(
+  "/fetchOrders",
+  passport.authenticate("bearer", { session: false }), 
+  (req, res) => {
+    schema.Order.find({ author: req.user.id })
+      .then((orders) => {
+        res.send(orders);
+      })
+      .catch((err) => {
+        console.log(err.message);
+        res.status(500).send(err.message);
+      });
+  }
+);
+
 // POST request for submitting an order
 router.post(
   "/order",
