@@ -10,23 +10,6 @@ Test Suite for testing the van opening and closing functionality
 
 */
 
-describe("Integration Test: Van unfulfilled order", () => {
-  // Store the auth token
-  let token = "73bahsbwy4";
-  let agent = request.agent(app);
-
-  test("Test 1 (Getting the list of orders)", () => {
-    return agent
-      .get("/api/vendor/orders")
-      .set("Authorization", `Bearer ${token}`)
-      .then((response) => {
-        // Check HTTP Status
-        expect(response.statusCode).toBe(200);
-        expect(response.body).toBeTruthy();
-      });
-  });
-});
-
 describe("Integration test: Van status update", () => {
   // Test case 1: Opening the van
 
@@ -50,6 +33,20 @@ describe("Integration test: Van status update", () => {
         expect(response.statusCode).toBe(200);
         // Check that the database has been updated
         expect(response.body.open).toBe(true);
+      });
+  });
+
+  test("Test 2 (Update status to close)", () => {
+    return request(app)
+      .post("/api/vendor/close")
+      .set("Authorization", `Bearer ${token}`)
+      .then((response) => {
+        // Check the HTTP status code
+        expect(response.statusCode).toBe(200);
+        // Check that the database has been updated
+        expect(response.body.open).toBe(false);
+        // Check the location
+        expect(response.body.position).toBe({});
       });
   });
 });

@@ -53,7 +53,11 @@ router.post(
   passport.authenticate("bearer", { session: false }),
   (req, res) => {
     let vendorID = req.user.id;
-    var query = schema.Vendor.findByIdAndUpdate(vendorID, { open: false });
+    var query = schema.Vendor.findByIdAndUpdate(vendorID, {
+      open: false,
+      address: null,
+      position: {},
+    });
     query.exec((err) => {
       if (err) {
         console.log(err.message);
