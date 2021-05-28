@@ -201,7 +201,7 @@ router.post(
 );
 
 
-// Get all vendor data for personalised vendor dashboard
+// GET request for all data of logged in vendor for personalised vendor dashboard
 router.get(
   "/vendorData",
   passport.authenticate("bearer", { session: false }),
