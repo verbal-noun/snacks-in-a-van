@@ -10,6 +10,9 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const jwt = require("jwt-simple");
 
+const defaultAddress = "";
+const defaultLocation = { longitude: 144.9631, latitude: 37.8136 };
+
 // Salt required for hasing vendor's password
 const saltRounds = 10;
 
@@ -105,8 +108,8 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
             {
               name: req.body.name,
               open: false,
-              address: null,
-              position: null,
+              address: defaultAddress,
+              position: defaultLocation,
               password: hash,
             },
           ])
