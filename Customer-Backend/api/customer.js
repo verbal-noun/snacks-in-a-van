@@ -22,7 +22,7 @@ function coordDistance(a, b) {
   let degLen = 110.25;
   let x = a.latitude - b.latitude;
   let y = Math.cos(b.latitude) * (a.longitude - b.longitude);
-  return degLen * Math.sqrt(x*x + y*y);
+  return degLen * Math.sqrt(x * x + y * y);
 }
 
 // --------------------------------------------------------------------- TRUCK LOCATION ---------------------------------------------------------------------//
@@ -55,17 +55,16 @@ router.get("/nearby/:longitude,:latitude", (req, res) => {
 router.get("/vendor/:vendorID", (req, res) => {
   var query = schema.Vendor.findById(req.params.vendorID);
   query.exec((err, vendor) => {
-    if(err) {
+    if (err) {
       console.log(err.message);
       res.status(500).send(err.message);
     } else {
-      if(vendor) {
+      if (vendor) {
         let obj = vendor.toJSON();
         delete obj.password;
         delete obj.token;
-        res.send(obj);  
-      }
-      else {
+        res.send(obj);
+      } else {
         res.status(500).send(`No vendor exists with id ${req.params.vendorID}`);
       }
     }
@@ -103,7 +102,7 @@ router.get("/menu/:itemID", (req, res) => {
 // GET request for listing all active orders
 router.get(
   "/fetchOrders",
-  passport.authenticate("bearer", { session: false }), 
+  passport.authenticate("bearer", { session: false }),
   (req, res) => {
     schema.Order.find({ author: req.user.id })
       .then((orders) => {
@@ -156,35 +155,37 @@ router.put(
     // req.body.orderID - ID of order user wants to change
     // req.body.orderItems - List of item IDs and quantities (e.g., [{item: "123iasoi", quantity: 3}])
     let now = new Date().getTime();
-    schema.Order.findOne({_id: req.body.orderID, author: req.user.id})
-    .then((order) => {
-      let minutesElapsed = (now - order.modifiedAt.getTime()) / 60000;
-      schema.Globals.findOne({name: "orderChangeLimit"})
-      .then((variable) => {
-        if(minutesElapsed > variable.value) {
-          res.status(500).send("Time limit expired, cannot change order.");
-        }
-        else {
-          schema.OrderItem.insertMany(req.body.orderItems)
-          .then((orderItems) => {
-            schema.Order.findByIdAndUpdate(req.body.orderID, {items: orderItems})
-              .then((order) => {
-                res.send(order);
-              })
-              .catch((err) => {
-                res.status(500).send(err.message);
-              });
-          })
-          .catch((err) => {
-            res.status(500).send(err.message);
-          });
-        }
+    schema.Order.findOne({ _id: req.body.orderID, author: req.user.id })
+      .then((order) => {
+        let minutesElapsed = (now - order.modifiedAt.getTime()) / 60000;
+        schema.Globals.findOne({ name: "orderChangeLimit" }).then(
+          (variable) => {
+            if (minutesElapsed > variable.value) {
+              res.status(500).send("Time limit expired, cannot change order.");
+            } else {
+              schema.OrderItem.insertMany(req.body.orderItems)
+                .then((orderItems) => {
+                  schema.Order.findByIdAndUpdate(req.body.orderID, {
+                    items: orderItems,
+                  })
+                    .then((order) => {
+                      res.send(order);
+                    })
+                    .catch((err) => {
+                      res.status(500).send(err.message);
+                    });
+                })
+                .catch((err) => {
+                  res.status(500).send(err.message);
+                });
+            }
+          }
+        );
+      })
+      .catch((err) => {
+        console.log(err.message);
+        res.status(500).send(err.message);
       });
-    })
-    .catch((err) => {
-      console.log(err.message);
-      res.status(500).send(err.message);
-    });
   }
 );
 
@@ -195,38 +196,37 @@ router.delete(
   (req, res) => {
     // req.body.orderID contains the id of the order to be cancelled
     let now = new Date().getTime();
-    schema.Order.findOne({_id: req.body.orderID, author: req.user.id})
-    .then((item) => {
-      let minutesElapsed = (now - item.modifiedAt.getTime()) / 60000;
-      schema.Globals.findOne({name: "orderChangeLimit"})
+    schema.Order.findOne({ _id: req.body.orderID, author: req.user.id })
       .then((item) => {
-        // Only allowed within schema.Globals.orderChangeLimit minutes of ordering  
-        if(minutesElapsed > item.value) {
-          res.status(500).send("Time limit expired, cannot cancel order.");
-        }
-        else {
-          schema.Order.findOneAndUpdate(
-            {_id: req.body.orderID, author: req.user.id}, 
-            {status: "Cancelled"}
-          )
+        let minutesElapsed = (now - item.modifiedAt.getTime()) / 60000;
+        schema.Globals.findOne({ name: "orderChangeLimit" })
           .then((item) => {
-            res.send(item);
+            // Only allowed within schema.Globals.orderChangeLimit minutes of ordering
+            if (minutesElapsed > item.value) {
+              res.status(500).send("Time limit expired, cannot cancel order.");
+            } else {
+              schema.Order.findOneAndUpdate(
+                { _id: req.body.orderID, author: req.user.id },
+                { status: "Cancelled" }
+              )
+                .then((item) => {
+                  res.send(item);
+                })
+                .catch((err) => {
+                  console.log(err.message);
+                  res.status(500).send(err.message);
+                });
+            }
           })
           .catch((err) => {
             console.log(err.message);
             res.status(500).send(err.message);
           });
-        }
       })
       .catch((err) => {
         console.log(err.message);
         res.status(500).send(err.message);
       });
-    })
-    .catch((err) => {
-      console.log(err.message);
-      res.status(500).send(err.message);
-    });
   }
 );
 
@@ -237,25 +237,27 @@ router.post(
   (req, res) => {
     // req.body.orderID contains the id of the order to be rated
     // req.body.rating contains the actual rating {value, comment}
-    schema.Order.findOne({_id: req.body.orderID, author: req.user.id})
-    .then((item) => {
-      schema.Rating.create(req.body.rating)
-      .then((rate) => {
-        console.log(rate);
-        schema.Order.findOneAndUpdate({_id: req.body.orderID, author: req.user.id}, {rating: rate._id})
-        .then((order) => {
-          res.send(order);
-        })
-        .catch((err) => {
-          console.log(err.message);
-          res.status(500).send(err.message);
+    schema.Order.findOne({ _id: req.body.orderID, author: req.user.id })
+      .then((item) => {
+        schema.Rating.create(req.body.rating).then((rate) => {
+          console.log(rate);
+          schema.Order.findOneAndUpdate(
+            { _id: req.body.orderID, author: req.user.id },
+            { rating: rate._id }
+          )
+            .then((order) => {
+              res.send(order);
+            })
+            .catch((err) => {
+              console.log(err.message);
+              res.status(500).send(err.message);
+            });
         });
+      })
+      .catch((err) => {
+        console.log(err.message);
+        res.status(500).send(err.message);
       });
-    })
-    .catch((err) => {
-      console.log(err.message);
-      res.status(500).send(err.message);
-    });
   }
 );
 
