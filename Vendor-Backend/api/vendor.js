@@ -200,4 +200,23 @@ router.post(
   }
 );
 
+
+// GET request for all data of logged in vendor for personalised vendor dashboard
+router.get(
+  "/vendorData",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    let vendorID = req.user.id
+    var query = schema.Vendor.findById(vendorID);
+    query.exec((err, vendorData) => {
+      if (err) {
+        console.log(err.message);
+        res.status(500).send(err.message);
+      } else {
+        res.send(vendorData);
+      }
+    });
+  }
+);
+
 module.exports = router;
