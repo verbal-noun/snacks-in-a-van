@@ -168,4 +168,32 @@ router.post(
   }
 );
 
+// POST request to make an order is picked up
+router.post(
+  "/orderPickup",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    var query = schema.Order.findByIdAndUpdate(req.body.order, {
+      status: "Done",
+    });
+    query.exec((err) => {
+      if (err) {
+        console.log(err.message);
+        res.status(500).send(err.message);
+      } else {
+        //res.send(updated);
+        var newQuery = schema.Order.findById(req.body.order);
+        newQuery.exec((err, order) => {
+          if (err) {
+            console.log(err.message);
+            res.status(500).send(err.message);
+          } else {
+            res.send(order);
+          }
+        });
+      }
+    });
+  }
+);
+
 module.exports = router;
