@@ -128,6 +128,7 @@ router.post(
           {
             vendor: req.body.vendor,
             author: req.user.id,
+            authorName: req.user.name,
             createdAt: new Date(),
             modifiedAt: new Date(),
             items: orderItems,
