@@ -46,7 +46,7 @@ describe("Integration test: Van status update", () => {
         // Check that the database has been updated
         expect(response.body.open).toBe(false);
         // Check the location
-        expect(response.body.position).toBe({});
+        expect(response.body.position).toBeUndefined();
       });
   });
 });
