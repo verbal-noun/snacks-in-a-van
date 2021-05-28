@@ -149,7 +149,7 @@ function validatePassword(signup) {
       .pattern(new RegExp("[0-9]+"))
       .min(8)
       .required(),
-  });
+  }).unknown();
 
   return schema.validate(signup);
 }
