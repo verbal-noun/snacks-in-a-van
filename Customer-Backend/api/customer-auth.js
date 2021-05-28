@@ -95,7 +95,7 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
       res.redirect("/api/customer/register");
     } else {
       // Check if password abides strict password policy or not
-      const { error } = validatePassword(req.body.password);
+      const { error } = validatePassword(req.body);
       // Signal password error if occurs
       if (error) {
         console.log("Password policy breached");
@@ -142,15 +142,16 @@ router.delete("/logout", (req, res) => {
 });
 
 /*------------------------------------- HELPER FUNCTIONS ----------------------------------------*/
-function validatePassword(password) {
+function validatePassword(signup) {
   const schema = Joi.object({
     password: Joi.string()
-      .pattern(new RegExp("^(?=.*d)(?=.*[a-zA-Z]).{8,}$"))
+      .pattern(new RegExp("[a-zA-Z]+"))
+      .pattern(new RegExp("[0-9]+"))
       .min(8)
       .required(),
   });
 
-  return schema.validate(password);
+  return schema.validate(signup);
 }
 
 module.exports = router;
