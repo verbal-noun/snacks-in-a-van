@@ -9,6 +9,7 @@ const schema = require("../../config/schemas");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const jwt = require("jwt-simple");
+const Joi = require("joi");
 
 // Salt required for hasing customer's password
 const saltRounds = 10;
@@ -73,9 +74,8 @@ router.post(
       if (err) {
         console.log(err.message);
         res.status(500).send(err.message);
-      }
-      else {
-        res.send({token: jwtToken});
+      } else {
+        res.send({ token: jwtToken });
       }
     });
   }
@@ -94,6 +94,14 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
     if (err || customers.length) {
       res.redirect("/api/customer/register");
     } else {
+      // Check if password abides strict password policy or not
+      const { error } = validatePassword(req.body.password);
+      // Signal password error if occurs
+      if (error) {
+        console.log("Password policy breached");
+        res.status(400).send(error.details[0].message);
+        return;
+      }
       // Generate a password hash based on user's inserted password
       bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
         if (err) {
@@ -132,5 +140,17 @@ router.delete("/logout", (req, res) => {
   req.logOut();
   res.redirect("/api/customer/login");
 });
+
+/*------------------------------------- HELPER FUNCTIONS ----------------------------------------*/
+function validatePassword(password) {
+  const schema = Joi.object({
+    password: Joi.string()
+      .pattern(new RegExp("^(?=.*d)(?=.*[a-zA-Z]).{8,}$"))
+      .min(8)
+      .required(),
+  });
+
+  return schema.validate(password);
+}
 
 module.exports = router;
