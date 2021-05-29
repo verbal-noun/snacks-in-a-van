@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
-const cors = require('cors');
+const cors = require("cors");
 
 const mongoose = require("mongoose");
 const customerAPI = require("./api/customer");
@@ -50,6 +50,7 @@ mongoose.connect(
   }
 );
 
+// Assign a port to run our app
 const port = 4040;
 http.listen(process.env.PORT || port, () => {
   console.log(`listening on port *:${port}`);

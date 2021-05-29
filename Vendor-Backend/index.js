@@ -33,7 +33,7 @@ app.use("/api/vendor", vendorAuthAPI);
 
 // Setting templating engine
 app.set("view-engine", "ejs");
-
+// Connect with the database
 mongoose.connect(
   process.env.DATABASE_URL,
   {
@@ -49,7 +49,7 @@ mongoose.connect(
     }
   }
 );
-
+// Setting up the server listening
 const port = 9090;
 http.listen(process.env.PORT || port, () => {
   console.log(`listening on port *:${port}`);

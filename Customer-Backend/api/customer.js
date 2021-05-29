@@ -12,12 +12,19 @@ const passport = require("passport");
 // Load auth-token config
 const initialisePassportBearer = require("../passport/token-config");
 
+// Initialise the passport with appropirate strategy and callback functions
 initialisePassportBearer(
   passport,
   async (authToken) =>
     await schema.Customer.findOne({ token: authToken }).exec()
 );
 
+/**
+ * Function to calculate the postion between the customer and truck
+ * @param {double} a: customer's position
+ * @param {double} b: the truck's position
+ * @returns
+ */
 function coordDistance(a, b) {
   let degLen = 110.25;
   let x = a.latitude - b.latitude;
@@ -124,6 +131,7 @@ router.post(
     // req.body.vendor - Which vendor is this order directed to
     schema.OrderItem.insertMany(req.body.orderItems)
       .then((orderItems) => {
+        // Create and insert an order item to teh database
         schema.Order.insertMany([
           {
             vendor: req.body.vendor,
@@ -159,6 +167,7 @@ router.put(
     schema.Order.findOne({ _id: req.body.orderID, author: req.user.id })
       .then((order) => {
         let minutesElapsed = (now - order.modifiedAt.getTime()) / 60000;
+        // Find the time limit within which the customer can change the order
         schema.Globals.findOne({ name: "orderChangeLimit" }).then(
           (variable) => {
             if (minutesElapsed > variable.value) {
@@ -200,6 +209,7 @@ router.delete(
     schema.Order.findOne({ _id: req.body.orderID, author: req.user.id })
       .then((item) => {
         let minutesElapsed = (now - item.modifiedAt.getTime()) / 60000;
+        // Find the time limit within which the customer can change the order
         schema.Globals.findOne({ name: "orderChangeLimit" })
           .then((item) => {
             // Only allowed within schema.Globals.orderChangeLimit minutes of ordering
@@ -240,7 +250,7 @@ router.post(
     // req.body.orderID contains the id of the order to be rated
     // req.body.rating contains the actual rating {value, comment}
     schema.Order.findOne({ _id: req.body.orderID, author: req.user.id })
-      .then((item) => {
+      .then(() => {
         schema.Rating.create(req.body.rating).then((rate) => {
           console.log(rate);
           schema.Order.findOneAndUpdate(

@@ -70,7 +70,7 @@ router.post(
       { email: req.body.email },
       { token: jwtToken }
     );
-    query.exec((err, doc) => {
+    query.exec((err) => {
       if (err) {
         console.log(err.message);
         res.status(500).send(err.message);
@@ -119,7 +119,7 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
               password: hash,
             },
           ])
-            .then((doc) => {
+            .then(() => {
               // Redirect user back to login if successful
               res.redirect("/api/customer/login");
             })
@@ -142,10 +142,18 @@ router.delete("/logout", (req, res) => {
 });
 
 /*------------------------------------- HELPER FUNCTIONS ----------------------------------------*/
+/**
+ * Function to enforce password policy of min 8 characters, at least one alphabet and number
+ *
+ * @param signup: The request body of POST request to the route
+ * @returns The error if there are any issues
+ */
 function validatePassword(signup) {
   const schema = Joi.object({
     password: Joi.string()
+      // Regex to check at least 1 alphabet
       .pattern(new RegExp("[a-zA-Z]+"))
+      // Regex to check at least one number between 0-9
       .pattern(new RegExp("[0-9]+"))
       .min(8)
       .required(),

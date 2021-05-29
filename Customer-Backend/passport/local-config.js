@@ -1,6 +1,14 @@
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 
+/**
+ * Function to instatiate passport with local strategy
+ *
+ * Contains logic on how user will be authenticated using username and password
+ * @param passport: Instance of passport
+ * @param getUserByEmail: Callback to get user by email
+ * @param getUserById: Callback to fetch user by their ID
+ */
 async function initialize(passport, getUserByEmail, getUserById) {
   const authenticateUser = async (email, password, done) => {
     const user = await getUserByEmail(email);
