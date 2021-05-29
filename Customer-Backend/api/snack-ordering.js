@@ -290,5 +290,20 @@ router.post(
   }
 );
 
+router.get(
+  "/globals",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    schema.Globals.find()
+      .then((globals) => {
+        res.send(globals);
+      })
+      .catch((err) => {
+        console.log(err.message);
+        res.status(500).send(err.message);
+      });
+  }
+);
+
 // Returning the router
 module.exports = router;
