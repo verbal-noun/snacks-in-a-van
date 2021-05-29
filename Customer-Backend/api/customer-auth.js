@@ -136,11 +136,11 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
 // Route for updating the customer info
 router.post(
   "/update",
-  passport.authenticate("local", { failureFlash: true }),
+  passport.authenticate("bearer", { failureFlash: true }),
   async (req, res) => {
     // Do security check
     // We have an authenticated user
-    if (!(await bcrypt.compare(password, req.user.password))) {
+    if (!(await bcrypt.compare(req.body.old_password, req.user.password))) {
       // Return unauthorized
       res.status(401).send("Unauthorized to such actions");
     }
@@ -157,7 +157,7 @@ router.post(
           console.log(err.message);
           res.status(500).send(err.message);
         } else {
-          console.log("Firstname updated.");
+          console.log("Email updated.");
         }
       });
     }
@@ -189,7 +189,7 @@ router.post(
               console.log(err.message);
               res.status(500).send(err.message);
             } else {
-              console.log("Updated password");
+              console.log.send("Password updated");
             }
           });
         }
