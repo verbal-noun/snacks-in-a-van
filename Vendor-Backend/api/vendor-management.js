@@ -144,13 +144,13 @@ router.get(
   }
 );
 
-// GET request for fetching completed orders
+// GET request for fetching all orders
 router.get(
-  "/completedOrders",
+  "/allOrders",
   passport.authenticate("bearer", { session: false }),
   (req, res) => {
     let vendorID = req.user.id;
-    var query = schema.Order.find({ vendor: vendorID, status: "Done" });
+    var query = schema.Order.find({ vendor: vendorID });
     query.exec(async (err, orders) => {
       if (err) {
         console.log(err.message);
