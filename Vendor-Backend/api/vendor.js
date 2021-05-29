@@ -127,6 +127,23 @@ router.get(
   }
 );
 
+router.get(
+  "/allOrders",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    let vendorID = req.user.id;
+    var query = schema.Order.find({ vendor: vendorID });
+    query.exec((err, orders) => {
+      if (err) {
+        console.log(err.message);
+        res.status(500).send(err.message);
+      } else {
+        res.send(orders);
+      }
+    });
+  }
+);
+
 // GET request for fetching order details
 router.get(
   "/order/:orderID",
