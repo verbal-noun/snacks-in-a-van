@@ -113,7 +113,12 @@ router.get(
   passport.authenticate("bearer", { session: false }),
   (req, res) => {
     let vendorID = req.user.id;
-    var query = schema.Order.find({ vendor: vendorID, status: "Preparing" });
+    var query = schema.Order.find({ 
+      $or: [
+        { vendor: vendorID, status: "Preparing" },
+        { vendor: vendorID, status: "Ready for pickup" }
+      ]
+    });
     query.exec(async (err, orders) => {
       if (err) {
         console.log(err.message);
