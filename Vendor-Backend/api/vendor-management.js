@@ -107,7 +107,7 @@ router.post(
 );
 
 // --------------------------------------------------------------- ORDERS -----------------------------------------------------
-// GET request for fetching unfulfilled orders
+// GET request for fetching unfulfilled and ready orders
 router.get(
   "/orders",
   passport.authenticate("bearer", { session: false }),
@@ -144,13 +144,13 @@ router.get(
   }
 );
 
-// GET request for fetching all orders
+// GET request for fetching completed orders
 router.get(
-  "/allOrders",
+  "/completedOrders",
   passport.authenticate("bearer", { session: false }),
   (req, res) => {
     let vendorID = req.user.id;
-    var query = schema.Order.find({ vendor: vendorID });
+    var query = schema.Order.find({ vendor: vendorID, status: "Done" });
     query.exec(async (err, orders) => {
       if (err) {
         console.log(err.message);
