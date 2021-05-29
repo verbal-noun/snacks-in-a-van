@@ -154,4 +154,5 @@ function validatePassword(signup) {
   return schema.validate(signup);
 }
 
+// Returning the router back
 module.exports = router;

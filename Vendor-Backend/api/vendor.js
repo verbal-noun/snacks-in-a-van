@@ -32,7 +32,6 @@ router.post(
         console.log(err.message);
         res.status(500).send(err.message);
       } else {
-        //res.send(updated);
         var newQuery = schema.Vendor.findById(vendorID);
         newQuery.exec((err, vendor) => {
           if (err) {
@@ -93,7 +92,6 @@ router.post(
         console.log(err.message);
         res.status(500).send(err.message);
       } else {
-        //res.send(updated);
         var newQuery = schema.Vendor.findById(vendorID);
         newQuery.exec((err, vendor) => {
           if (err) {
@@ -122,17 +120,18 @@ router.get(
         res.status(500).send(err.message);
       } else {
         try {
-          for(let i = 0; i < orders.length; i++) {
+          for (let i = 0; i < orders.length; i++) {
             orders[i] = orders[i].toJSON();
-            let customer = await schema.Customer.findById(orders[i].author).exec();
+            let customer = await schema.Customer.findById(
+              orders[i].author
+            ).exec();
             orders[i].customer = {
               name: customer.name,
-              email: customer.email
+              email: customer.email,
             };
           }
           res.send(orders);
-        }
-        catch(e) {
+        } catch (e) {
           res.send(e);
         }
       }
@@ -153,17 +152,18 @@ router.get(
         res.status(500).send(err.message);
       } else {
         try {
-          for(let i = 0; i < orders.length; i++) {
+          for (let i = 0; i < orders.length; i++) {
             orders[i] = orders[i].toJSON();
-            let customer = await schema.Customer.findById(orders[i].author).exec();
+            let customer = await schema.Customer.findById(
+              orders[i].author
+            ).exec();
             orders[i].customer = {
               name: customer.name,
-              email: customer.email
+              email: customer.email,
             };
           }
           res.send(orders);
-        }
-        catch(e) {
+        } catch (e) {
           res.send(e);
         }
       }
@@ -203,7 +203,7 @@ router.get(
       }
     });
   }
-)
+);
 
 // POST request for fulfilling an order
 router.post(
@@ -261,13 +261,12 @@ router.post(
   }
 );
 
-
 // GET request for all data of logged in vendor for personalised vendor dashboard
 router.get(
   "/vendorData",
   passport.authenticate("bearer", { session: false }),
   (req, res) => {
-    let vendorID = req.user.id
+    let vendorID = req.user.id;
     var query = schema.Vendor.findById(vendorID);
     query.exec((err, vendorData) => {
       if (err) {

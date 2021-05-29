@@ -36,6 +36,7 @@ describe("Integration test: Van status update", () => {
       });
   });
 
+  // Test 2: Closing of the van
   test("Test 2 (Update status to close)", () => {
     return request(app)
       .post("/api/vendor/close")

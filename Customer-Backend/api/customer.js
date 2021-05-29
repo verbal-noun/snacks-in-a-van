@@ -263,16 +263,5 @@ router.post(
   }
 );
 
-// --------------------------------------------- Test routes ------------------- ORDERING --------------------------------------------------------------------//
-
-router.get(
-  "/authTokenTest",
-  passport.authenticate("bearer", { session: false }),
-  (req, res) => {
-    console.log("Token used.");
-
-    res.send(req.user.id);
-  }
-);
-
+// Returning the router
 module.exports = router;
