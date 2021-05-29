@@ -191,8 +191,8 @@ router.get(
             email: customer.email,
           };
           for (var i = 0; i < order.items; i++) {
-            let itemCost = await schema.Item.findById(items[i].item).exec();
-            orderCost += itemCost * item.quantity;
+            let itemCost = await schema.Item.findById(items[i]._id).exec();
+            orderCost = itemCost;
           }
           order.orderCost = orderCost;
           res.send(order);
