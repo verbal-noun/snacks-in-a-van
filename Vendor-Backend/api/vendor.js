@@ -177,12 +177,23 @@ router.get(
   passport.authenticate("bearer", { session: false }),
   (req, res) => {
     var query = schema.Order.findById(req.params.orderID);
-    query.exec((err, orders) => {
+    query.exec(async (err, order) => {
       if (err) {
         console.log(err.message);
         res.status(500).send(err.message);
       } else {
-        res.send(orders);
+        try {
+          order = order.toJSON();
+          let customer = await schema.Customer.findById(order.author).exec();
+          order.customer = {
+            name: customer.name,
+            email: customer.email
+          };
+          res.send(order);
+        }
+        catch(e) {
+          res.send(e);
+        }
       }
     });
   }
