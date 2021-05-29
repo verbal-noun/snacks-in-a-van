@@ -116,12 +116,25 @@ router.get(
   (req, res) => {
     let vendorID = req.user.id;
     var query = schema.Order.find({ vendor: vendorID, status: "Preparing" });
-    query.exec((err, orders) => {
+    query.exec(async (err, orders) => {
       if (err) {
         console.log(err.message);
         res.status(500).send(err.message);
       } else {
-        res.send(orders);
+        try {
+          for(let i = 0; i < orders.length; i++) {
+            orders[i] = orders[i].toJSON();
+            let customer = await schema.Customer.findById(orders[i].author).exec();
+            orders[i].customer = {
+              name: customer.name,
+              email: customer.email
+            };
+          }
+          res.send(orders);
+        }
+        catch(e) {
+          res.send(e);
+        }
       }
     });
   }
@@ -134,12 +147,25 @@ router.get(
   (req, res) => {
     let vendorID = req.user.id;
     var query = schema.Order.find({ vendor: vendorID });
-    query.exec((err, orders) => {
+    query.exec(async (err, orders) => {
       if (err) {
         console.log(err.message);
         res.status(500).send(err.message);
       } else {
-        res.send(orders);
+        try {
+          for(let i = 0; i < orders.length; i++) {
+            orders[i] = orders[i].toJSON();
+            let customer = await schema.Customer.findById(orders[i].author).exec();
+            orders[i].customer = {
+              name: customer.name,
+              email: customer.email
+            };
+          }
+          res.send(orders);
+        }
+        catch(e) {
+          res.send(e);
+        }
       }
     });
   }
@@ -161,6 +187,23 @@ router.get(
     });
   }
 );
+
+// GET request for fetching a customer's details
+router.get(
+  "/customer/:customerID",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    var query = schema.Customer.findById(req.params.customerID);
+    query.exec((err, orders) => {
+      if (err) {
+        console.log(err.message);
+        res.status(500).send(err.message);
+      } else {
+        res.send(orders);
+      }
+    });
+  }
+)
 
 // POST request for fulfilling an order
 router.post(
