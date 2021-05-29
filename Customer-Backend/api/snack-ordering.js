@@ -122,6 +122,23 @@ router.get(
   }
 );
 
+// GET request for fetching an order by ID
+router.get(
+  "/fetchOrders/:orderID",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    schema.Order.find({ author: req.user.id, _id: req.params.orderID })
+      .then((order) => {
+        console.log(order);
+        res.send(order);
+      })
+      .catch((err) => {
+        console.log(err.message);
+        res.status(500).send(err.message);
+      });
+  }
+);
+
 // POST request for submitting an order
 router.post(
   "/order",
