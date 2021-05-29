@@ -127,6 +127,7 @@ router.get(
   }
 );
 
+// GET request for fetching all orders
 router.get(
   "/allOrders",
   passport.authenticate("bearer", { session: false }),
