@@ -62,7 +62,6 @@ router.post(
       {
         email: req.body.email,
         password: req.body.password,
-        timestamp: new Date(),
       },
       process.env.JWT_SECRET
     );
@@ -138,8 +137,65 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
 router.post(
   "/update",
   passport.authenticate("local", { failureFlash: true }),
-  (req, res) => {
-    // Update the username if it's working
+  async (req, res) => {
+    // Do security check
+    // We have an authenticated user
+    if (!(await bcrypt.compare(password, user.password))) {
+      // Return unauthorized
+      res.status(401).send("Unauthorized to such actions");
+    }
+
+    // Update the Email if it's not null
+    if (req.body.new_email != null) {
+      // Update the username
+      let query = schema.Customer.findOneAndUpdate(
+        { email: req.user.email },
+        { email: req.body.new_email }
+      );
+      query.exec((err) => {
+        if (err) {
+          console.log(err.message);
+          res.status(500).send(err.message);
+        } else {
+          console.log("Firstname updated.");
+        }
+      });
+    }
+
+    if (req.body.new_password != null) {
+      // Generate the hash of the new password
+      bcrypt.hash(req.body.new_password, saltRounds, function (err, hash) {
+        if (err) {
+          console.log(err);
+          res.redirect();
+        } else {
+          // Create a new token
+          const jwtToken = jwt.encode(
+            {
+              email: req.body.email,
+              password: req.body.password,
+            },
+            process.env.JWT_SECRET
+          );
+
+          // Update the password hash and token of the user
+          let query = schema.Customer.findOneAndUpdate(
+            { email: req.user.email },
+            { token: jwtToken, password: hash }
+          );
+
+          query.exec((err) => {
+            if (err) {
+              console.log(err.message);
+              res.status(500).send(err.message);
+            } else {
+              console.log("Updated password");
+            }
+          });
+        }
+      });
+    }
+    res.send(req.user);
   }
 );
 
