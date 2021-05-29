@@ -35,7 +35,7 @@ function coordDistance(a, b) {
 // --------------------------------------------------------------------- TRUCK LOCATION ---------------------------------------------------------------------//
 // GET Request to show the nearby 5 trucks to the customer
 router.get("/nearby/:longitude,:latitude", (req, res) => {
-  var query = schema.Vendor.find();
+  var query = schema.Vendor.find({open: true});
   query.exec((err, vendors) => {
     if (err) {
       console.log(err.message);
