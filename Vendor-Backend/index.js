@@ -4,7 +4,7 @@ const http = require("http").createServer(app);
 const cors = require("cors");
 
 const mongoose = require("mongoose");
-const vendorAPI = require("./api/vendor");
+const vendorAPI = require("./api/vendor-management");
 const vendorAuthAPI = require("./api/vendor-auth");
 
 const passport = require("passport");

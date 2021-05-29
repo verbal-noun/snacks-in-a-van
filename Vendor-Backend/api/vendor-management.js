@@ -187,11 +187,10 @@ router.get(
           let customer = await schema.Customer.findById(order.author).exec();
           order.customer = {
             name: customer.name,
-            email: customer.email
+            email: customer.email,
           };
           res.send(order);
-        }
-        catch(e) {
+        } catch (e) {
           res.send(e);
         }
       }
@@ -229,7 +228,7 @@ router.post(
         console.log(err.message);
         res.status(500).send(err.message);
       } else {
-        //res.send(updated);
+        // Send back the vendor object
         var newQuery = schema.Order.findById(req.body.order);
         newQuery.exec((err, order) => {
           if (err) {
@@ -257,7 +256,7 @@ router.post(
         console.log(err.message);
         res.status(500).send(err.message);
       } else {
-        //res.send(updated);
+        // Send back the vendor object
         var newQuery = schema.Order.findById(req.body.order);
         newQuery.exec((err, order) => {
           if (err) {

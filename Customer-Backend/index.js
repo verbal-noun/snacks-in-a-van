@@ -4,7 +4,7 @@ const http = require("http").createServer(app);
 const cors = require("cors");
 
 const mongoose = require("mongoose");
-const customerAPI = require("./api/customer");
+const customerAPI = require("./api/snack-ordering");
 const customerAuthAPI = require("./api/customer-auth");
 
 const passport = require("passport");
@@ -34,6 +34,7 @@ app.use("/api/customer", customerAuthAPI);
 // Setting templating engine
 app.set("view-engine", "ejs");
 
+// Connect with the database
 mongoose.connect(
   process.env.DATABASE_URL,
   {
