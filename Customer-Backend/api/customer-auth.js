@@ -134,6 +134,15 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
   });
 });
 
+// Route for updating the customer info
+router.post(
+  "/update",
+  passport.authenticate("local", { failureFlash: true }),
+  (req, res) => {
+    // Update the username if it's working
+  }
+);
+
 // Route for logging out
 router.delete("/logout", (req, res) => {
   // Using passport to logout
