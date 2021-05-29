@@ -194,6 +194,7 @@ router.put(
                 .then((orderItems) => {
                   schema.Order.findByIdAndUpdate(req.body.orderID, {
                     items: orderItems,
+                    modifiedAt: now
                   })
                     .then((order) => {
                       res.send(order);
