@@ -140,7 +140,7 @@ router.post(
   async (req, res) => {
     // Do security check
     // We have an authenticated user
-    if (!(await bcrypt.compare(password, user.password))) {
+    if (!(await bcrypt.compare(password, req.user.password))) {
       // Return unauthorized
       res.status(401).send("Unauthorized to such actions");
     }
