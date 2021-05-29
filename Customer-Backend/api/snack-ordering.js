@@ -217,7 +217,7 @@ router.put(
 );
 
 // DELETE request for cancelling an order (set status to Cancelled)
-router.delete(
+router.post(
   "/cancelOrder",
   passport.authenticate("bearer", { session: false }),
   (req, res) => {
