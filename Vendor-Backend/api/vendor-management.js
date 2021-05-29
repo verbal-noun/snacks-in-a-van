@@ -184,11 +184,18 @@ router.get(
       } else {
         try {
           order = order.toJSON();
+          var orderCost = 0;
           let customer = await schema.Customer.findById(order.author).exec();
           order.customer = {
             name: customer.name,
             email: customer.email,
           };
+          for (var i = 0; i < order.items; i++) {
+            item = items[i];
+            let itemCost = await schema.Item.findById(item.item).exec();
+            orderCost += itemCost * item.quantity;
+          }
+          order.orderCost = orderCost;
           res.send(order);
         } catch (e) {
           res.send(e);
