@@ -99,7 +99,7 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
       // Signal password error if occurs
       if (error) {
         console.log("Password policy breached");
-        res.status(500).send(error.details[0].message);
+        res.status(500).send("The password must be at least 8 characters, at least 1 letter and a number");
         return;
       }
       // Generate a password hash based on user's inserted password
