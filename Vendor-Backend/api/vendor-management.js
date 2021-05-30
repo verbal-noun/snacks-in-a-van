@@ -228,6 +228,33 @@ router.get(
   }
 );
 
+// DELETE request for cancelling an order (set status to Cancelled)
+router.post(
+  "/cancelOrder",
+  passport.authenticate("bearer", { session: false }),
+  (req, res) => {
+    // req.body.orderID contains the id of the order to be cancelled
+    schema.Order.findOneAndUpdate(
+      { _id: req.body.orderID, vendor: req.user.id },
+      { status: "Cancelled" }
+    )
+      .then(() => {
+        schema.Order.findOne({ _id: req.body.orderID, vendor: req.user.id })
+          .then((item) => {
+            res.send(item);
+          })
+          .catch((err) => {
+            console.log(err.message);
+            res.status(500).send(err.message);
+          })
+      })
+      .catch((err) => {
+        console.log(err.message);
+        res.status(500).send(err.message);
+      });
+  }
+);
+
 // GET request for fetching a customer's details
 router.get(
   "/customer/:customerID",
