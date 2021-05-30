@@ -180,3 +180,7 @@ All the vendor requests need to be authenticated. Hence all of the following API
   - _Usage:_
     1. We need to make a POST request with the order we want to the transition the status of. A sample of the body and request as follows:
        <img src="resources/vendor-fullfillOrder.png" alt="Order fulfilled request screenshot">
+
+
+### Front-end Repository link
+https://github.com/INFO30005-2021-SM1/project-frontend-t13-runtime-terror
