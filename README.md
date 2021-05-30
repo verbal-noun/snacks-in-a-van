@@ -2,7 +2,7 @@
 ## INFO30005 Deliverable 3 - Frontend + Backend (Customer App)
 
 
-<br> 
+<br>
 
 ## Team: Runtime Terror
 
@@ -34,31 +34,60 @@
   - Node.js
   - MongoDB
   - Heruko
-  
+  - Jest
+
 <br> <br>
 
-## API Documentation
+## Credentials
+#### Customer
 
-### Test Credentials
+| Email       | Password | Token                                                                                                                                                                                        |
+| ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| dummy   | dummy     | dummy                                                                                                                                                                                      |
+| dymmy | dummy     | dummy |
+
+#### Vendor
+
+| Email   | Password | Token                                                                                                                                                                                         |
+| ------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| d  | d    | d |
+| d| d | d|
+
+### Database
+
+MongoDB connection string:
+
+    mongodb+srv://root:testtest@cluster0.iyw6v.mongodb.net/snacksInAVan?retryWrites=true&w=majority
+
+## Heruko URL
+| App | Front-end | Back-end |
+| --- | --------- | -------- |
+| Customer | https://info30005-customer-frontend.herokuapp.com | https://info30005-customer-backend.herokuapp.com/ |
+| Vendor | https://info30005-vendor-frontend.herokuapp.com/ | https://info30005-vendor-backend.herokuapp.com/ |
+
+## Testing
+
+Run the following command to install the required files for integretion testing
+
+    npm install
+
+
+### Integration testing
+
+The following command will run the tests
+
+    npm run int-test
+
+### Unit Testing
+
+
+## API Documentation
 
 We used JWT tokens based on the customer/vendor email to authenticate and access restricted resources.
 
 Here we have are including a _test user_ with a fake token created manually by the admins and an
 actual user with _sample user_ with an actual JWT token created by the routes to test our routes.
 
-#### Customer
-
-| Email       | Password | Token                                                                                                                                                                                        |
-| ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| test@test   | 1234     | 1234567                                                                                                                                                                                      |
-| sample@user | 4321     | eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InNhbXBsZUB1c2VyIiwicGFzc3dvcmQiOiI0MzIxIiwidGltZXN0YW1wIjoiMjAyMS0wNC0yM1QwNzowNzo1My4yMTVaIn0.AfglmUPAmHwB6lMpFRPWvkrQenCAuM115rbJGwjmaqY |
-
-#### Vendor
-
-| Vendor Name   | Password | Token                                                                                                                                                                                         |
-| ------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| test-vendor1  | 1234     | 987654321                                                                                                                                                                                     |
-| sample-vendor | 4321     | eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic2FtcGxlLXZlbmRvciIsInBhc3N3b3JkIjoiNDMyMSIsInRpbWVzdGFtcCI6IjIwMjEtMDQtMjNUMDc6MTQ6NDkuODYwWiJ9.CrZEWdOvPC5fuTCqg2v1xWGgALif1yHvniGBxVsYBYU |
 
 To simulate logging in as a particular user (either Vendor or Customer) on Postman, we must manualy set the
 authorization bearer. We simply copy and paste the JWT string of the user we want to log in as for the API route into the token field.
@@ -67,9 +96,7 @@ authorization bearer. We simply copy and paste the JWT string of the user we wan
   <img src="resources/postman-auth.png" alt="Set the JWT token for routes that require authentication">
 
 
-### Database 
 
-MongoDB connection string: mongodb+srv://root:testtest@cluster0.iyw6v.mongodb.net/snacksInAVan?retryWrites=true&w=majority
 
 
 ### Customer App API
