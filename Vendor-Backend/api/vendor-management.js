@@ -194,17 +194,19 @@ router.get(
             name: customer.name,
             email: customer.email,
           };
+
           // Check if any discount needs to be applied
-          if (!order.discounted) {
+          if (order.discounted == false) {
             // Check if time limit has been passed or not
-            let minutesElaspsed =
-              (Date().getTime() - order.modifiedAt.getTime()) / 60000;
+            let now = new Date().getTime();
+            let minutesElaspsed = (now - order.modifiedAt.getTime()) / 60000;
             // Find the time limit after which discount will be applied'
             schema.Globals.findOne({ name: "discountLimit" })
               .then((variable) => {
                 // Elapsed time is greater than limit
                 if (minutesElaspsed > variable.value) {
                   // Update the order total price with the discount
+                  console.log("Reach");
                   let discountAmount =
                     order.totalPrice * (variable.amount / 100);
                   order.totalPrice -= discountAmount;
@@ -215,9 +217,10 @@ router.get(
                 res.status(500).send(err.message);
               });
           }
-
+          console.log(`Line 219: ${order}`);
           res.send(order);
         } catch (e) {
+          console.log(`Line 222`);
           res.send(e);
         }
       }
