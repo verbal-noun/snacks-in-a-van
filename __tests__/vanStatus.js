@@ -11,14 +11,27 @@ Test Suite for testing the van opening and closing functionality
 */
 
 describe("Integration test: Van status update", () => {
+  let agent = request.agent(app);
   // Test case 1: Opening the van
 
   // Store the auth token
-  token =
-    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiVGVzdCBWZW5kb3IiLCJwYXNzd29yZCI6IjEyMzQ1NjdFIiwidGltZXN0YW1wIjoiMjAyMS0wNS0zMFQxMDo0MTo0Ny4zNDhaIn0.txMkF188CyDWrFSHguh3fq_ENy1oWLNkRsKEv8FMAGs";
+  let token = null;
+  // Set up the token value for the integration test
+  beforeAll(() =>
+    agent
+      .post("/api/vendor/login")
+      .set("Content-Type", "application/x-www-form-urlencoded")
+      .send({
+        name: "Test Vendor",
+        password: "1234567E",
+      })
+      .then((res) => {
+        token = res.body.token;
+      })
+  );
 
   test("Test 1 (Update status to open)", () => {
-    return request(app)
+    return agent
       .post("/api/vendor/open")
       .set("Authorization", `Bearer ${token}`)
       .send({
@@ -39,7 +52,7 @@ describe("Integration test: Van status update", () => {
 
   // Test 2: Closing of the van
   test("Test 2 (Update status to close)", () => {
-    return request(app)
+    return agent
       .post("/api/vendor/close")
       .set("Authorization", `Bearer ${token}`)
       .then((response) => {

@@ -79,7 +79,9 @@ The following command will run the tests
 
     npm run int-test
 
-**Note:** Please do not delete test-vendor from the database as we're using it to perform our integration test.
+**Note:** Please do not delete `Test Vendor` (or change the name or password) from the database as we're using it's credentials to perform our integration test.
+
+If you have, then please update the `./__tests__/vanStatus.js` file with proper name and password for the integrations tests to run.
 
 ### Unit Testing
 
