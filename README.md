@@ -27,7 +27,7 @@
 - Front-end
   - Figma
   - CSS
-  - React Native
+  - React.js
   - Bootstrap
 
 - Back-end
