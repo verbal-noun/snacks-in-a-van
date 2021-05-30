@@ -249,6 +249,7 @@ router.post(
       .then(() => {
         schema.Order.findOne({ _id: req.body.orderID, vendor: req.user.id })
           .then((item) => {
+            console.log(item);
             res.send(item);
           })
           .catch((err) => {
