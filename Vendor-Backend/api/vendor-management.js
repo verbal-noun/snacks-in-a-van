@@ -215,20 +215,32 @@ router.get(
                   order.totalPrice = newTotal;
                   order.discounted = true;
 
-                  console.log(order);
+                  // Update the database
+                  let query = schema.Order.findByIdAndUpdate(
+                    req.params.orderID,
+                    {
+                      totalPrice: newTotal,
+                      discounted: true,
+                    }
+                  );
+                  query.exec((err) => {
+                    if (err) {
+                      console.log(err, message);
+                      res.status(500).send(err.message);
+                    } else {
+                      // The database will now be updated
+                    }
+                  });
                   res.send(order);
                 }
               })
               .catch((err) => {
-                res.send(e);
+                res.send(err);
               });
           } else {
-            console.log("Line 223");
-            console.log(order);
             res.send(order);
           }
         } catch (e) {
-          console.log(`Line 222`);
           res.send(e);
         }
       }
