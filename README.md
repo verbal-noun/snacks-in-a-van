@@ -104,6 +104,8 @@ authorization bearer. We simply copy and paste the JWT string of the user we wan
 
       eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiVGVzdCBWZW5kb3IiLCJwYXNzd29yZCI6IjEyMzQ1NjdFIiwidGltZXN0YW1wIjoiMjAyMS0wNS0zMFQxMjowNjozNi45MThaIn0.saYKyViPQ-MWmF0sOqZZAdwme7riPwzNSRC9-MzHrAk
 
+**Note:** This is not an exhaustive list of all the API routes. Instead demonstrate the core functionalities.
+
 ### Customer App API
 
 #### View menu of snacks (including pictures and prices)
