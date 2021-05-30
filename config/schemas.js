@@ -63,6 +63,7 @@ const Item = createModel("Item", {
 const Globals = createModel("Globals", {
   name: String,
   value: Number,
+  amount: Number,
 });
 
 module.exports = {

@@ -113,11 +113,11 @@ router.get(
   passport.authenticate("bearer", { session: false }),
   (req, res) => {
     let vendorID = req.user.id;
-    var query = schema.Order.find({ 
+    var query = schema.Order.find({
       $or: [
         { vendor: vendorID, status: "Preparing" },
-        { vendor: vendorID, status: "Ready for pickup" }
-      ]
+        { vendor: vendorID, status: "Ready for pickup" },
+      ],
     });
     query.exec(async (err, orders) => {
       if (err) {
@@ -189,17 +189,33 @@ router.get(
       } else {
         try {
           order = order.toJSON();
-          var orderCost = 0;
           let customer = await schema.Customer.findById(order.author).exec();
           order.customer = {
             name: customer.name,
             email: customer.email,
           };
-          for (var i = 0; i < order.items; i++) {
-            let itemCost = await schema.Item.findById(items[i]._id).exec();
-            orderCost = itemCost;
+          // Check if any discount needs to be applied
+          if (!order.discounted) {
+            // Check if time limit has been passed or not
+            let minutesElaspsed =
+              (Date().getTime() - order.modifiedAt.getTime()) / 60000;
+            // Find the time limit after which discount will be applied'
+            schema.Globals.findOne({ name: "discountLimit" })
+              .then((variable) => {
+                // Elapsed time is greater than limit
+                if (minutesElaspsed > variable.value) {
+                  // Update the order total price with the discount
+                  let discountAmount =
+                    order.totalPrice * (variable.amount / 100);
+                  order.totalPrice -= discountAmount;
+                  order.discounted = true;
+                }
+              })
+              .catch((err) => {
+                res.status(500).send(err.message);
+              });
           }
-          order.orderCost = orderCost;
+
           res.send(order);
         } catch (e) {
           res.send(e);

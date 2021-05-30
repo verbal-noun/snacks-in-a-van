@@ -292,6 +292,7 @@ router.post(
   }
 );
 
+// -------------------------------------------------------- Route for the time limits ------------------------------------------------//
 router.get(
   "/globals",
   passport.authenticate("bearer", { session: false }),
