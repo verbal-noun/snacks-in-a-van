@@ -1,8 +1,6 @@
 # Runtime Terror Back-end Repository
 
-## INFO30005 Deliverable 3 - Frontend + Backend (Customer App)
-
-<br>
+## INFO30005 Deliverable 4 - Web Application
 
 ## Team: Runtime Terror
 
@@ -32,6 +30,10 @@
 | CSS       | MongoDB Compass |
 | Bootstrap | Postman         |
 
+#### Front-end Repository link
+https://github.com/INFO30005-2021-SM1/project-frontend-t13-runtime-terror
+
+
 ## Credentials
 
 #### Customer
@@ -39,14 +41,14 @@
 | Email           | Password |
 | --------------- | -------- |
 | random@test.com | 1234567e |
-| dymmy           | dummy    |
+| kamy@elon       | 1234ASDF |
 
 #### Vendor
 
 | Name        | Password |
 | ----------- | -------- |
-| Test Vendor | 1234567E |
-| d           | d        |
+| Test-Vendor | 1234567E |
+| Hannah      | 1234     |
 
 In case, you have lost access / deleted all vendors from the database, a vendor can be created:
 
@@ -73,15 +75,12 @@ Run the following command to install the required files for integretion testing
 
     npm install
 
-### Integration testing
 
 The following command will run the tests
 
     npm run int-test
 
 **Note:** Please do not delete test-vendor from the database as we're using it to perform our integration test.
-
-### Unit Testing
 
 ## API Documentation
 
@@ -184,5 +183,3 @@ All the vendor requests need to be authenticated. Hence all of the following API
        <img src="resources/vendor-fullfillOrder.png" alt="Order fulfilled request screenshot">
 
 
-### Front-end Repository link
-https://github.com/INFO30005-2021-SM1/project-frontend-t13-runtime-terror
