@@ -14,7 +14,8 @@ describe("Integration test: Van status update", () => {
   // Test case 1: Opening the van
 
   // Store the auth token
-  token = "73bahsbwy4";
+  token =
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiVGVzdCBWZW5kb3IiLCJwYXNzd29yZCI6IjEyMzQ1NjdFIiwidGltZXN0YW1wIjoiMjAyMS0wNS0zMFQxMDo0MTo0Ny4zNDhaIn0.txMkF188CyDWrFSHguh3fq_ENy1oWLNkRsKEv8FMAGs";
 
   test("Test 1 (Update status to open)", () => {
     return request(app)

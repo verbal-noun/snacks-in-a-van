@@ -194,13 +194,11 @@ router.get(
             name: customer.name,
             email: customer.email,
           };
-
           // Check if any discount needs to be applied
           if (order.discounted == false) {
             // Check if time limit has been passed or not
             let now = new Date().getTime();
             let minutesElaspsed = (now - order.modifiedAt.getTime()) / 60000;
-
             // Find the time limit after which discount will be applied'
             schema.Globals.findOne({ name: "discountLimit" })
               .then((variable) => {
@@ -209,12 +207,10 @@ router.get(
                   // Update the order total price with the discount
                   let discountAmount =
                     order.totalPrice * (variable.amount / 100);
-
                   let newTotal = order.totalPrice - discountAmount;
                   // Update the information in the database
                   order.totalPrice = newTotal;
                   order.discounted = true;
-
                   // Update the database
                   let query = schema.Order.findByIdAndUpdate(
                     req.params.orderID,
@@ -231,6 +227,9 @@ router.get(
                       // The database will now be updated
                     }
                   });
+                  res.send(order);
+                } else {
+                  // Still within the discount limit
                   res.send(order);
                 }
               })
@@ -267,7 +266,7 @@ router.post(
           .catch((err) => {
             console.log(err.message);
             res.status(500).send(err.message);
-          })
+          });
       })
       .catch((err) => {
         console.log(err.message);
