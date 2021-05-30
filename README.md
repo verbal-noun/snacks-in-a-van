@@ -24,19 +24,14 @@
 
 ## Tech Stack
 
-- Front-end
-  - Figma
-  - CSS
-  - React.js
-  - Bootstrap
+| Front-end | Back-end|
+| --------- | ------- |
+| Figma | Node.js|
+| Canva | MongoDB|
+| React.js | MongoDB Atlas |
+| CSS | MongoDB Compass |
+| Bootstrap | Postman |
 
-- Back-end
-  - Node.js
-  - MongoDB
-  - Heruko
-  - Jest
-
-<br> <br>
 
 ## Credentials
 #### Customer
