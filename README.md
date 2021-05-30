@@ -31,8 +31,8 @@
 | Bootstrap | Postman         |
 
 #### Front-end Repository link
-https://github.com/INFO30005-2021-SM1/project-frontend-t13-runtime-terror
 
+https://github.com/INFO30005-2021-SM1/project-frontend-t13-runtime-terror
 
 ## Credentials
 
@@ -75,7 +75,6 @@ Run the following command to install the required files for integretion testing
 
     npm install
 
-
 The following command will run the tests
 
     npm run int-test
@@ -96,6 +95,14 @@ authorization bearer. We simply copy and paste the JWT string of the user we wan
 
 - _Postman Authentication:_
   <img src="resources/postman-auth.png" alt="Set the JWT token for routes that require authentication">
+
+  **Customer routes token:**
+
+      eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InJhbmRvbUB0ZXN0LmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2N2UifQ.yF2ON2ASvSZm1Gi_eoTUk1pBi628VAMHqlOI81ikEq8
+
+  **Vendor routes token:**
+
+      eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiVGVzdCBWZW5kb3IiLCJwYXNzd29yZCI6IjEyMzQ1NjdFIiwidGltZXN0YW1wIjoiMjAyMS0wNS0zMFQxMjowNjozNi45MThaIn0.saYKyViPQ-MWmF0sOqZZAdwme7riPwzNSRC9-MzHrAk
 
 ### Customer App API
 
@@ -183,5 +190,3 @@ All the vendor requests need to be authenticated. Hence all of the following API
   - _Usage:_
     1. We need to make a POST request with the order we want to the transition the status of. A sample of the body and request as follows:
        <img src="resources/vendor-fullfillOrder.png" alt="Order fulfilled request screenshot">
-
-
