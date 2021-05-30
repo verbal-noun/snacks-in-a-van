@@ -35,7 +35,7 @@ function coordDistance(a, b) {
 // --------------------------------------------------------------------- TRUCK LOCATION ---------------------------------------------------------------------//
 // GET Request to show the nearby 5 trucks to the customer
 router.get("/nearby/:longitude,:latitude", (req, res) => {
-  var query = schema.Vendor.find({open: true});
+  var query = schema.Vendor.find({ open: true });
   query.exec((err, vendors) => {
     if (err) {
       console.log(err.message);
@@ -158,6 +158,7 @@ router.post(
             modifiedAt: new Date(),
             items: orderItems,
             discounted: false,
+            totalPrice: req.body.totalPrice,
           },
         ])
           .then((order) => {
@@ -194,7 +195,7 @@ router.put(
                 .then((orderItems) => {
                   schema.Order.findByIdAndUpdate(req.body.orderID, {
                     items: orderItems,
-                    modifiedAt: now
+                    modifiedAt: now,
                   })
                     .then((order) => {
                       res.send(order);
