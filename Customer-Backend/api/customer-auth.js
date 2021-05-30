@@ -91,6 +91,7 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
   query.exec((err, customers) => {
     // Ensure user does not exist yet
     if (err || customers.length) {
+      res.status(500).send("Account with that email already exists.");
       res.redirect("/api/customer/register");
     } else {
       // Check if password abides strict password policy or not
@@ -98,7 +99,7 @@ router.post("/register", checkNotAuthenticated, (req, res) => {
       // Signal password error if occurs
       if (error) {
         console.log("Password policy breached");
-        res.status(400).send(error.details[0].message);
+        res.status(500).send("The password must be at least 8 characters, at least 1 letter and a number");
         return;
       }
       // Generate a password hash based on user's inserted password
