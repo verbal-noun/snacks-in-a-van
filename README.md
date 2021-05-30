@@ -1,8 +1,8 @@
 # Runtime Terror Back-end Repository
+
 ## INFO30005 Deliverable 3 - Frontend + Backend (Customer App)
 
- 
-<br> 
+<br>
 
 ## Team: Runtime Terror
 
@@ -24,29 +24,35 @@
 
 ## Tech Stack
 
-| Front-end | Back-end|
-| --------- | ------- |
-| Figma | Node.js|
-| Canva | MongoDB|
-| React.js | MongoDB Atlas |
-| CSS | MongoDB Compass |
-| Bootstrap | Postman |
-
+| Front-end | Back-end        |
+| --------- | --------------- |
+| Figma     | Node.js         |
+| Canva     | MongoDB         |
+| React.js  | MongoDB Atlas   |
+| CSS       | MongoDB Compass |
+| Bootstrap | Postman         |
 
 ## Credentials
+
 #### Customer
 
-| Email       | Password | Token                                                                                                                                                                                        |
-| ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| dummy   | dummy     | dummy                                                                                                                                                                                      |
-| dymmy | dummy     | dummy |
+| Email           | Password |
+| --------------- | -------- |
+| random@test.com | 1234567e |
+| dymmy           | dummy    |
 
 #### Vendor
 
-| Email   | Password | Token                                                                                                                                                                                         |
-| ------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| d  | d    | d |
-| d| d | d|
+| Name        | Password |
+| ----------- | -------- |
+| Test Vendor | 1234567E |
+| d           | d        |
+
+In case, you have lost access / deleted all vendors from the database, a vendor can be created:
+
+    https://info30005-vendor-backend.herokuapp.com/register
+
+Please note that we added this route for emergency purposes as the project requirement does not require us to implement a register page for vendors.
 
 ### Database
 
@@ -55,10 +61,11 @@ MongoDB connection string:
     mongodb+srv://root:testtest@cluster0.iyw6v.mongodb.net/snacksInAVan?retryWrites=true&w=majority
 
 ## Heruko URL
-| App | Front-end | Back-end |
-| --- | --------- | -------- |
+
+| App      | Front-end                                         | Back-end                                          |
+| -------- | ------------------------------------------------- | ------------------------------------------------- |
 | Customer | https://info30005-customer-frontend.herokuapp.com | https://info30005-customer-backend.herokuapp.com/ |
-| Vendor | https://info30005-vendor-frontend.herokuapp.com/ | https://info30005-vendor-backend.herokuapp.com/ |
+| Vendor   | https://info30005-vendor-frontend.herokuapp.com/  | https://info30005-vendor-backend.herokuapp.com/   |
 
 ## Testing
 
@@ -66,15 +73,15 @@ Run the following command to install the required files for integretion testing
 
     npm install
 
-
 ### Integration testing
 
 The following command will run the tests
 
     npm run int-test
 
-### Unit Testing
+**Note:** Please do not delete test-vendor from the database as we're using it to perform our integration test.
 
+### Unit Testing
 
 ## API Documentation
 
@@ -83,16 +90,11 @@ We used JWT tokens based on the customer/vendor email to authenticate and access
 Here we have are including a _test user_ with a fake token created manually by the admins and an
 actual user with _sample user_ with an actual JWT token created by the routes to test our routes.
 
-
 To simulate logging in as a particular user (either Vendor or Customer) on Postman, we must manualy set the
 authorization bearer. We simply copy and paste the JWT string of the user we want to log in as for the API route into the token field.
 
 - _Postman Authentication:_
   <img src="resources/postman-auth.png" alt="Set the JWT token for routes that require authentication">
-
-
-
-
 
 ### Customer App API
 
@@ -129,7 +131,7 @@ authorization bearer. We simply copy and paste the JWT string of the user we wan
      |----|---|
      |Authorization| Bearer 1234567|
   3. Then we need to define the body of the request with the vendor and orderItems. Vendor is the vendorID and and orderItems is a list of item object. Sample body:<br>
-      <img src="resources/customer-order-body.png" alt="Van status request screenshot" width=350>
+     <img src="resources/customer-order-body.png" alt="Van status request screenshot" width=350>
 
 <br>
 
