@@ -229,6 +229,7 @@ router.get(
                   });
                   res.send(order);
                 } else {
+                  // Still within the discount limit
                   res.send(order);
                 }
               })
