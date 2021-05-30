@@ -225,7 +225,7 @@ router.get(
                   );
                   query.exec((err) => {
                     if (err) {
-                      console.log(err, message);
+                      console.log(err.message);
                       res.status(500).send(err.message);
                     } else {
                       // The database will now be updated
