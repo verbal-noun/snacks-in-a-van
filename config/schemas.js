@@ -45,12 +45,13 @@ const Order = createModel("Order", {
     default: "Preparing",
   },
   discounted: Boolean,
+  totalPrice: Number,
 });
 
 const Rating = createModel("Rating", {
   value: Number,
   comment: String,
-  order: Schema.Types.ObjectId
+  order: Schema.Types.ObjectId,
 });
 
 const Item = createModel("Item", {
