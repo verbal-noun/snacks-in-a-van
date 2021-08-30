@@ -66,6 +66,13 @@ const Globals = createModel("Globals", {
   amount: Number,
 });
 
+const Music = createModel("Music", {
+  Book: Number,
+  Page: Number,
+  Title: String,
+  Author: String,
+});
+
 module.exports = {
   Customer,
   Vendor,
@@ -74,4 +81,5 @@ module.exports = {
   Rating,
   Item,
   Globals,
+  Music,
 };
