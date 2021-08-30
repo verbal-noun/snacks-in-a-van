@@ -6,6 +6,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const vendorAPI = require("./api/vendor-management");
 const vendorAuthAPI = require("./api/vendor-auth");
+const musicListAPI = require("./api/music");
 
 const passport = require("passport");
 const flash = require("express-flash");
@@ -30,6 +31,7 @@ app.use(methodOverride("_method"));
 
 app.use("/api/vendor", vendorAPI);
 app.use("/api/vendor", vendorAuthAPI);
+app.use("/api/music", musicListAPI);
 
 // Setting templating engine
 app.set("view-engine", "ejs");
